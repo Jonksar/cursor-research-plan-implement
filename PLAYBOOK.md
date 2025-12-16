@@ -1,4 +1,4 @@
-# Claude Code Research-Plan-Implement Framework Playbook
+# Cursor Research-Plan-Implement Framework Playbook
 
 ## Table of Contents
 1. [Overview](#overview)
@@ -34,15 +34,15 @@ The Research-Plan-Implement Framework is a structured approach to AI-assisted so
 
 1. **Copy framework files to your repository:**
 ```bash
-# From the .claude-framework-adoption directory
-cp -r .claude your-repo/
+# From the framework directory
+cp -r .cursor your-repo/
 cp -r thoughts your-repo/
 ```
 
 2. **Customize for your project:**
-- Edit `.claude/commands/*.md` to match your tooling
-- Update agent descriptions if needed
-- Add project-specific CLAUDE.md
+- Edit `.cursor/commands/*.md` to match your tooling
+- Update `.cursor/rules/*.mdc` to encode project conventions
+- (Optional) Add project-specific guidance used by your team/tooling
 
 3. **Test the workflow:**
 
@@ -72,12 +72,8 @@ cp -r thoughts your-repo/
 
 ```
 your-repo/
-├── .claude/                      # AI Assistant Configuration
-│   ├── agents/                   # Specialized AI agents
-│   │   ├── codebase-locator.md   # Finds relevant files
-│   │   ├── codebase-analyzer.md  # Analyzes implementation
-│   │   └── codebase-pattern-finder.md # Finds patterns to follow
-│   └── commands/                 # Numbered workflow commands
+├── .cursor/                      # Cursor Configuration
+│   ├── commands/                 # Numbered workflow slash commands
 │       ├── 1_research_codebase.md
 │       ├── 2_create_plan.md
 │       ├── 3_validate_plan.md
@@ -86,6 +82,8 @@ your-repo/
 │       ├── 6_resume_work.md     # Resume saved work
 │       ├── 7_research_cloud.md  # Cloud infrastructure analysis
 │       └── 8_define_test_cases.md # Design acceptance test cases
+│   └── rules/                    # Cursor Rules (always-on + contextual)
+│       └── research-plan-implement.mdc
 ├── thoughts/                     # Persistent Context Storage
 │   └── shared/
 │       ├── research/            # Research findings
@@ -96,7 +94,6 @@ your-repo/
 │       │   └── YYYY-MM-DD_*.md
 │       └── cloud/               # Cloud infrastructure analyses
 │           └── platform_*.md
-└── CLAUDE.md                    # Project-specific instructions
 ```
 
 ## Workflow Phases
@@ -107,7 +104,7 @@ your-repo/
 
 **Process**:
 1. Invoke command with research question
-2. AI spawns parallel agents to investigate
+2. Cursor Agent uses codebase search + targeted file reads to investigate
 3. Findings compiled into structured document
 4. Saved to `thoughts/shared/research/`
 
@@ -355,24 +352,12 @@ This enables seamless context switching between features or across days/weeks.
 - **Input**: Feature/functionality to test
 - **Output**: Test case definitions in comments + required DSL functions
 - **Approach**: Comment-first, follows existing test patterns
-- **Agent Used**: codebase-pattern-finder (automatic)
 
-## Agent Reference
+## Cursor Rules & Commands
 
-### codebase-locator
-- **Role**: Find relevant files
-- **Tools**: Grep, Glob, LS
-- **Returns**: Categorized file listings
-
-### codebase-analyzer
-- **Role**: Understand implementation
-- **Tools**: Read, Grep, Glob, LS
-- **Returns**: Detailed code analysis
-
-### codebase-pattern-finder
-- **Role**: Find examples to follow
-- **Tools**: Grep, Glob, Read, LS
-- **Returns**: Code patterns and examples
+Cursor uses:
+- `.cursor/commands/` for repo-defined slash commands
+- `.cursor/rules/` for always-on and contextual guidance
 
 ## Best Practices
 
@@ -400,9 +385,10 @@ This enables seamless context switching between features or across days/weeks.
 - Session summaries maintain continuity
 
 ### 5. Use Parallel Agents
-- Spawn multiple agents for research
-- Let them work simultaneously
-- Combine findings for comprehensive view
+- In Cursor, keep exploration fast by:
+  - using codebase search to fan out across call sites
+  - opening the authoritative entry points first
+  - queueing structured commands when helpful (e.g. `/1_research_codebase` → `/2_create_plan` → `/4_implement_plan`)
 
 ### 6. Design Tests Early
 - Define test cases before implementing features
@@ -454,9 +440,9 @@ tools: Read, Grep
 You are a security specialist...
 ```
 
-### Project-Specific CLAUDE.md
+### Project-Specific Guidance
 
-Add instructions for your project:
+If your team uses additional guidance files, add instructions for your project (or extend `.cursor/rules/*.mdc`):
 
 ```markdown
 # Project Conventions

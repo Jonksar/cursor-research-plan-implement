@@ -1,18 +1,18 @@
 #!/bin/bash
 
-# Claude Code Framework Update Script
+# Cursor Framework Update Script
 # Quick wrapper to run setup.sh in update mode
 
 set -e
 
-echo "🔄 Claude Code Framework Update"
+echo "🔄 Cursor Framework Update"
 echo "================================"
 echo ""
 
 # Get target directory
 if [ -z "$1" ]; then
     # Try current directory first
-    if [ -d ".claude" ]; then
+    if [ -d ".cursor" ]; then
         TARGET_DIR="."
         echo "📁 Updating framework in current directory"
     else
@@ -29,7 +29,7 @@ if [ ! -d "$TARGET_DIR" ]; then
 fi
 
 # Check if framework is installed
-if [ ! -d "$TARGET_DIR/.claude" ]; then
+if [ ! -d "$TARGET_DIR/.cursor" ]; then
     echo "❌ Error: No framework installation found in '$TARGET_DIR'"
     echo "Run setup.sh first to install the framework"
     exit 1

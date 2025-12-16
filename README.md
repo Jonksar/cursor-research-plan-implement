@@ -1,4 +1,4 @@
-# Claude Code Research-Plan-Implement Framework
+# Cursor Research-Plan-Implement Framework
 
 A structured workflow framework for AI-assisted software development that emphasizes thorough research, detailed planning, and systematic implementation.
 
@@ -9,7 +9,7 @@ A structured workflow framework for AI-assisted software development that emphas
 ./setup.sh /path/to/your/repo
 
 # Or manually copy files
-cp -r .claude /path/to/your/repo/
+cp -r .cursor /path/to/your/repo/
 cp -r thoughts /path/to/your/repo/
 cp PLAYBOOK.md /path/to/your/repo/
 ```
@@ -17,13 +17,9 @@ cp PLAYBOOK.md /path/to/your/repo/
 ## 📁 What's Included
 
 ```
-.claude-framework-adoption/
-├── .claude/
-│   ├── agents/                  # AI agent definitions
-│   │   ├── codebase-locator.md  # Finds relevant files
-│   │   ├── codebase-analyzer.md # Analyzes how code works
-│   │   └── codebase-pattern-finder.md # Finds patterns to follow
-│   └── commands/                # Numbered workflow commands
+.cursor-framework-adoption/
+├── .cursor/
+│   ├── commands/                # Numbered workflow slash commands (Cursor)
 │       ├── 1_research_codebase.md
 │       ├── 2_create_plan.md
 │       ├── 3_validate_plan.md
@@ -32,6 +28,8 @@ cp PLAYBOOK.md /path/to/your/repo/
 │       ├── 6_resume_work.md
 │       ├── 7_research_cloud.md
 │       └── 8_define_test_cases.md
+│   └── rules/                   # Cursor Rules (always-on and contextual)
+│       └── research-plan-implement.mdc
 ├── thoughts/                    # Context storage structure
 │   └── shared/
 │       ├── research/
@@ -48,7 +46,7 @@ cp PLAYBOOK.md /path/to/your/repo/
 The framework follows a structured workflow:
 
 ### 1️⃣ Research Codebase (`/1_research_codebase`)
-**Purpose**: Deep dive into the codebase using parallel AI agents
+**Purpose**: Deep dive into the codebase using Cursor Agent + codebase search
 **Usage**: Provide a research question or area to explore
 **Output**: Comprehensive findings saved to `thoughts/shared/research/`
 **Example**: "How does the authentication system work?"
@@ -91,7 +89,7 @@ The framework follows a structured workflow:
 
 ### 8️⃣ Define Test Cases (`/8_define_test_cases`)
 **Purpose**: Design acceptance test cases using DSL approach with comment-first structure
-**Usage**: Describe feature to test; agent researches existing test patterns first
+**Usage**: Describe feature to test; Cursor Agent researches existing test patterns first
 **Output**: Test case definitions in comments + list of required DSL functions
 **Example**: "Define test cases for partner enrollment workflow"
 
@@ -99,12 +97,12 @@ The framework follows a structured workflow:
 
 - **[PLAYBOOK.md](PLAYBOOK.md)** - Complete guide with examples and best practices
 - **Command Files** - Each command file contains detailed instructions for that phase
-- **Agent Files** - Define specialized AI agents for specific tasks
+- **Cursor Rules** - Always-on guidance in `.cursor/rules/` to keep the workflow consistent
 
 ## 🎯 Key Benefits
 
 - **📚 Knowledge Accumulation**: Research and plans persist in `thoughts/` directory
-- **⚡ Parallel Processing**: Multiple AI agents work simultaneously during research
+- **⚡ Fast Exploration**: Cursor Agent + codebase search help you map systems quickly
 - **✅ Quality Assurance**: Built-in validation and success criteria
 - **🔍 Deep Understanding**: Thorough research before implementation
 - **📋 Clear Specifications**: Detailed plans prevent scope creep
@@ -114,9 +112,8 @@ The framework follows a structured workflow:
 After installation, customize for your project:
 
 1. **Edit command files** to match your tooling (test commands, linting, etc.)
-2. **Update CLAUDE.md** with project-specific conventions
-3. **Modify agent tools** if needed
-4. **Adjust directory paths** in commands
+2. **Update Cursor Rules** in `.cursor/rules/` with project-specific conventions
+3. **Adjust directory paths** in commands
 
 ## 💡 Typical Workflow Example
 
