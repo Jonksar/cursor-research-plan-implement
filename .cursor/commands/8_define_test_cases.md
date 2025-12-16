@@ -28,10 +28,10 @@ You are helping define automated acceptance test cases using a Domain Specific L
 Ask minimal clarifying questions (systems involved, outcomes, failure modes).
 
 2. Research existing patterns
-Use codebase search to find:
-- Acceptance/integration test files
-- Existing DSL helpers and naming conventions
-- How tests are organized (describe blocks, fixtures, helpers)
+Use `sub-agents-mcp` to find the best existing examples fast:
+- **codebase-pattern-finder**: locate representative acceptance/integration tests and DSL helpers.
+- **codebase-locator**: enumerate test folders and helper modules by category.
+Then use Cursor codebase search to confirm details and gather additional edge cases.
 
 3. Define test cases in comments
 Cover:

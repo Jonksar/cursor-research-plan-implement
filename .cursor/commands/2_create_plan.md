@@ -23,8 +23,11 @@ Then wait for the user’s input.
 
 ### 1) Context gathering
 - Open/read any files the user references.
-- Use codebase search to find relevant modules, entry points, and adjacent systems.
-- Find patterns to follow (similar features, tests, conventions).
+- Use `sub-agents-mcp` to speed up context gathering:
+  - **codebase-locator**: find relevant modules, entry points, and related directories.
+  - **codebase-analyzer**: explain how the current implementation works and where the seams are.
+  - **codebase-pattern-finder**: find similar features/tests to model after.
+- Use Cursor codebase search + targeted file reads to verify and fill in details.
 
 Ask only questions that require human judgment (scope, trade-offs, product intent). Keep questions minimal.
 

@@ -21,10 +21,13 @@ Then wait for the user’s research query.
    - Break the query into 2–6 sub-areas (components, flows, data models, boundaries).
    - Track subtasks with Cursor Tasks / a todo list.
 
-3. Research efficiently using Cursor features
-   - Use codebase search to locate relevant symbols, call sites, and configs.
-   - Open the key files and trace the data flow end-to-end.
-   - When helpful, queue focused follow-up searches (you can do them in parallel by running multiple searches before deep-reading).
+3. Research using Cursor + sub-agents (recommended)
+   - Use the `sub-agents-mcp` MCP server to delegate focused exploration:
+     - Use **codebase-locator** to quickly list relevant files and entry points.
+     - Use **codebase-analyzer** to trace the main flow end-to-end in the most relevant files.
+     - Use **codebase-pattern-finder** to find similar implementations/tests to model after.
+   - Then, use Cursor codebase search + targeted file reads to fill gaps and verify details.
+   - If sub-agents fail due to auth, ask the user to run `cursor-agent login` once.
 
 4. Synthesize findings (with precise references)
    - Include concrete file paths and line ranges.
