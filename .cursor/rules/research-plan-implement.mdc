@@ -1,0 +1,46 @@
+---
+description: Research → Plan → Implement workflow with durable artifacts in thoughts/
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Research-Plan-Implement (Cursor)
+
+## Default workflow
+- For non-trivial tasks, follow: **Research → Plan → Implement → Validate → Save/Resume**.
+- Prefer writing or updating durable artifacts in `thoughts/shared/`:
+  - Research: `thoughts/shared/research/NNN_topic.md`
+  - Plans: `thoughts/shared/plans/NNN_topic.md`
+  - Sessions: `thoughts/shared/sessions/NNN_topic.md`
+  - Cloud: `thoughts/shared/cloud/NNN_platform_environment.md`
+
+## Use the repo slash commands
+- Use the numbered Cursor slash commands:
+  - `/1_research_codebase` (produce a research artifact)
+  - `/2_create_plan` (produce an implementation plan)
+  - `/4_implement_plan` (execute an approved plan phase-by-phase)
+  - `/3_validate_plan` (verify plan success criteria + deviations)
+  - `/5_save_progress` and `/6_resume_work` (checkpoint + resume)
+  - `/7_research_cloud` (read-only)
+  - `/8_define_test_cases` (comment-first DSL)
+
+## Research behavior
+- Read user-mentioned files first.
+- Use codebase search to find entry points and call-sites.
+- Prefer evidence: cite file paths + line ranges when making claims.
+
+## Planning behavior
+- Ask only questions that require human judgment.
+- Write phased plans with measurable success criteria and explicit out-of-scope.
+
+## Implementation behavior
+- Do not implement until a plan is approved.
+- Implement phase-by-phase; run the phase’s automated checks; fix failures before moving on.
+- Update plan checkboxes as you complete work.
+
+## Save/resume behavior
+- If work is paused, produce a session summary with:
+  - what changed, what’s next, what’s blocked, and how to resume.
+
+## Safety
+- For cloud analysis, execute READ-ONLY operations only; never create/update/delete resources.
