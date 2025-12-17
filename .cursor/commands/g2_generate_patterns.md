@@ -1,19 +1,19 @@
-# 11_generate_fix_patterns
+# g2_generate_patterns
 
 You are tasked with generating a **reusable matcher library** for validating guideline fixes. The matchers are derived from:
 - Generic guideline text in `thoughts/shared/guidelines/*.md`
-- The most recent guideline-fix plan in `thoughts/shared/plans/` (if present), especially its violations appendix
+- The most recent guideline-fix plan in `thoughts/shared/guideline_plans/` (if present), especially its violations appendix
 - The current codebase state (optional hit counts)
 
-This command writes/overwrites: `thoughts/shared/guidelines/fix_patterns.yaml`
+This command writes/overwrites: `thoughts/shared/guideline_patterns/GPATNNN_fix_patterns.yaml`
 
 ## Process
 
 1. Identify inputs
    - Read guideline files (generic guidance).
-   - Find the most recent `thoughts/shared/plans/*guideline_fixes*.md` (or ask user for the plan path).
+   - Find the most recent `thoughts/shared/guideline_plans/*guideline_fixes*.md` (or ask user for the plan path).
    - Extract the plan’s `## Appendix: Violations (structured)` YAML block (if present).
-     - If missing, ask the user to re-run `/10_plan_guideline_fixes` with the appendix enabled.
+     - If missing, ask the user to re-run `/g1_plan_fixes` with the appendix enabled.
 
 2. Generate matchers
    - For each violation cluster (same domain/section/pattern), create a matcher entry with:
@@ -29,7 +29,8 @@ This command writes/overwrites: `thoughts/shared/guidelines/fix_patterns.yaml`
    - Run `grep` searches per matcher and record `hit_count` and a few example locations.
 
 4. Write `fix_patterns.yaml`
-   - Overwrite the file so `/3_validate_plan` can consume it deterministically.
+   - Determine next sequence number (GPAT001...).
+   - Save to `thoughts/shared/guideline_patterns/GPATNNN_fix_patterns.yaml`.
 
 ## Output format (fix_patterns.yaml)
 
@@ -56,5 +57,4 @@ matchers:
 ## Notes
 - Keep matchers stable: avoid embedding repo-specific absolute paths.
 - Prefer fewer, higher-quality matchers over broad ones that create noise.
-
 

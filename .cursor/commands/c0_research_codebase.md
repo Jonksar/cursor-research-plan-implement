@@ -1,4 +1,4 @@
-# 1_research_codebase
+# c0_research_codebase
 
 You are tasked with conducting comprehensive research across the codebase to answer the user’s question and to produce a durable research artifact.
 
@@ -76,10 +76,11 @@ status: complete
 ```
 
 6. Save and present
-   - Determine the next 3-digit sequence number by checking existing files.
-   - Save to `thoughts/shared/research/NNN_topic.md`.
+   - Determine the next sequence number (CR001, CR002...) by checking `thoughts/shared/code_research/`.
+   - Save to `thoughts/shared/code_research/CRNNN_topic.md`.
    - Present a concise summary and the top file references.
 
 ## Notes
 - Prefer concrete evidence over assumptions.
 - If the codebase is large, start broad, then narrow to the authoritative entry points and core flows.
+

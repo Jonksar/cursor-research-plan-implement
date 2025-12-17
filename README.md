@@ -21,13 +21,10 @@ cp PLAYBOOK.md /path/to/your/repo/
 ├── .cursor/
 │   ├── commands/                # Numbered workflow slash commands (Cursor)
 │       ├── 1_research_codebase.md
-│       ├── 2_create_plan.md
-│       ├── 3_validate_plan.md
-│       ├── 4_implement_plan.md
-│       ├── 5_save_progress.md
-│       ├── 6_resume_work.md
-│       ├── 7_research_cloud.md
-│       └── 8_define_test_cases.md
+│       ├── ...
+│       ├── 9_generate_guidelines.md
+│       ├── 12_research_ux.md
+│       └── (see full list in .cursor/commands/)
 │   └── rules/                   # Cursor Rules (always-on and contextual)
 │       └── research-plan-implement.mdc
 ├── thoughts/                    # Context storage structure
@@ -41,57 +38,55 @@ cp PLAYBOOK.md /path/to/your/repo/
 └── README.md                    # This file
 ```
 
-## 🔄 Workflow Commands
+## 🗺️ Process Map
 
-The framework follows a structured workflow:
+```mermaid
+flowchart TD
+    subgraph Research_Design [Research & Design]
+        direction TB
+        UR[ux_research] --> UP[ux_plan] --> UIP[ui_plan]
+        UV[ux_validate]
+    end
 
-### 1️⃣ Research Codebase (`/1_research_codebase`)
-**Purpose**: Deep dive into the codebase using Cursor Agent + codebase search
-**Usage**: Provide a research question or area to explore
-**Output**: Comprehensive findings saved to `thoughts/shared/research/`
-**Example**: "How does the authentication system work?"
+    subgraph Guidelines_Flow [Guidelines Flow]
+        GL[generate_guidelines]
+        GLF[plan_guideline_fixes]
+    end
 
-### 2️⃣ Create Plan (`/2_create_plan`)
-**Purpose**: Generate detailed, phased implementation plans
-**Usage**: Describe the feature or change you want to implement
-**Output**: Structured plan saved to `thoughts/shared/plans/`
-**Example**: "Add OAuth2 integration to the authentication system"
+    subgraph Dev_Flow [Development Flow]
+        direction LR
+        RC[research_codebase] -.->|Optional| CP[code_plan]
+        CP --> CI[code_implement] --> CV[code_validate]
+    end
 
-### 3️⃣ Validate Plan (`/3_validate_plan`)
-**Purpose**: Verify implementation matches the plan's success criteria
-**Usage**: Automatically checks against the most recent plan
-**Output**: Validation report confirming all phases are complete
-**Example**: Just run `/3_validate_plan` after implementation
+    %% Flow Connections
+    UIP --> CP
+    UIP -.-> RC
+    CV --> UV
 
-### 4️⃣ Implement Plan (`/4_implement_plan`)
-**Purpose**: Execute a plan systematically, phase by phase
-**Usage**: Provide path to a plan file or describe what to implement
-**Output**: Code changes following the plan's specifications
-**Example**: `thoughts/shared/plans/oauth2_integration.md`
+    %% Guideline Connections
+    GL -.->|Optional| CP
+    CV -.->|Optional| GLF
+    GLF --> CI
+```
 
-### 5️⃣ Save Progress (`/5_save_progress`)
-**Purpose**: Save current work session state for continuity
-**Usage**: Creates a session summary documenting work progress
-**Output**: Session file in `thoughts/shared/sessions/`
-**Example**: Use when stopping work mid-task
+### Phase Descriptions
 
-### 6️⃣ Resume Work (`/6_resume_work`)
-**Purpose**: Resume from a previously saved session
-**Usage**: Loads context from a session file
-**Output**: Restored context and work continuation
-**Example**: `thoughts/shared/sessions/2025-01-06_oauth2.md`
+**Research & Design**
+- **ux_research**: Gather user insights and requirements (`/12_research_ux`)
+- **ux_plan**: Define user journeys and information architecture (`/13_plan_ux`)
+- **ui_plan**: Create visual designs and interface specifications
+- **ux_validate**: Confirm the solution meets user needs
 
-### 7️⃣ Research Cloud (`/7_research_cloud`)
-**Purpose**: Analyze cloud infrastructure using READ-ONLY CLI operations
-**Usage**: Specify cloud platform (Azure/AWS/GCP) and focus area
-**Output**: Infrastructure analysis in `thoughts/shared/cloud/`
-**Example**: "Analyze Azure production environment"
+**Guidelines Flow**
+- **generate_guidelines**: Establish engineering standards and patterns (`/9_generate_guidelines`)
+- **plan_guideline_fixes**: Strategy to remediate guideline violations (`/11_generate_fix_patterns`)
 
-### 8️⃣ Define Test Cases (`/8_define_test_cases`)
-**Purpose**: Design acceptance test cases using DSL approach with comment-first structure
-**Usage**: Describe feature to test; Cursor Agent researches existing test patterns first
-**Output**: Test case definitions in comments + list of required DSL functions
-**Example**: "Define test cases for partner enrollment workflow"
+**Development Flow**
+- **research_codebase** (Optional): Analyze existing code to inform technical planning (`/1_research_codebase`)
+- **code_plan**: Create a detailed technical implementation plan (`/2_create_plan`)
+- **code_implement**: Execute the plan and write the code (`/4_implement_plan`)
+- **code_validate**: Verify the implementation against requirements (`/3_validate_plan`)
 
 ## 📖 Documentation
 

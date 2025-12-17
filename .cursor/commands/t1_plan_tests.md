@@ -1,4 +1,4 @@
-# 8_define_test_cases
+# t1_plan_tests
 
 You are helping define automated acceptance test cases using a Domain Specific Language (DSL) approach.
 
@@ -50,7 +50,9 @@ Group by:
 Note which functions likely already exist vs need creation.
 
 ## Deliverables
-Provide:
-1) Comment-first test case definitions
-2) Required DSL function list (organized)
-3) Notes on alignment with existing patterns
+- Determine the next sequence number (TP001, TP002...) by checking `thoughts/shared/test_plans/`.
+- Save to `thoughts/shared/test_plans/TPNNN_test_case_definitions.md` with:
+  1) Comment-first test case definitions
+  2) Required DSL function list (organized)
+  3) Notes on alignment with existing patterns
+

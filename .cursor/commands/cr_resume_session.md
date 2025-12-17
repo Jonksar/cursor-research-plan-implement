@@ -1,10 +1,10 @@
-# 6_resume_work
+# cr_resume_session
 
 You are tasked with resuming previously saved work by restoring full context and continuing implementation.
 
 ## Inputs
 - If the user provides a session summary path: use it.
-- Otherwise: list recent sessions in `thoughts/shared/sessions/` and ask which to resume.
+- Otherwise: list recent sessions in `thoughts/shared/code_sessions/` and ask which to resume.
 
 ## Process
 
@@ -43,3 +43,4 @@ Create a brief summary:
 ## Guidelines
 - Verify state before making new changes.
 - If the codebase drifted since last session, call out conflicts and propose a path forward.
+

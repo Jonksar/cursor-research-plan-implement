@@ -1,4 +1,4 @@
-# 2_create_plan
+# c1_code_plan
 
 You are tasked with creating a detailed, phased implementation plan through an interactive, iterative process. Be skeptical, thorough, and collaborative.
 
@@ -12,7 +12,7 @@ I'll help you create a detailed implementation plan. Let me start by understandi
 Please provide:
 1. The task description or requirements
 2. Any relevant context, constraints, or specific requirements
-3. Links to related research or previous implementations
+3. Links to related research (CR001...) or previous implementations
 
 I'll analyze this information and work with you to create a comprehensive plan.
 ```
@@ -35,8 +35,8 @@ Ask only questions that require human judgment (scope, trade-offs, product inten
 Present a short proposed phase breakdown and confirm it matches expectations.
 
 ### 3) Write the plan document
-- Determine the next 3-digit sequence number by checking existing plan files.
-- Write to `thoughts/shared/plans/NNN_descriptive_name.md`.
+- Determine the next sequence number (CP001, CP002...) by checking `thoughts/shared/code_plans/`.
+- Write to `thoughts/shared/code_plans/CPNNN_descriptive_name.md`.
 
 Use this structure:
 
@@ -95,3 +95,4 @@ Refine the plan based on feedback until there are no open questions.
 - Be specific: file paths, commands, measurable success criteria.
 - Optimize for incremental, testable phases.
 - Don’t start implementation until the plan is approved.
+

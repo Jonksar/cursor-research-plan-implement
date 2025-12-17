@@ -1,4 +1,4 @@
-# 5_save_progress
+# cs_save_session
 
 You are tasked with saving a durable progress checkpoint when the user needs to pause work.
 
@@ -41,12 +41,12 @@ Add a progress checkpoint section near the top of the plan (or in a dedicated se
 - ...
 
 ### Commands to Resume
-- `/6_resume_work thoughts/shared/sessions/NNN_feature.md`
+- `/cr_resume_session thoughts/shared/code_sessions/CSNNN_feature.md`
 ```
 
 3. Create a session summary document
-- Determine next 3-digit sequence number by checking `thoughts/shared/sessions/`.
-- Save to `thoughts/shared/sessions/NNN_feature.md`.
+- Determine next sequence number (CS001, CS002...) by checking `thoughts/shared/code_sessions/`.
+- Save to `thoughts/shared/code_sessions/CSNNN_feature.md`.
 
 Use this structure:
 
@@ -54,8 +54,8 @@ Use this structure:
 ---
 date: [ISO timestamp]
 feature: [Feature name]
-plan: thoughts/shared/plans/[plan].md
-research: thoughts/shared/research/[research].md
+plan: thoughts/shared/code_plans/[plan].md
+research: thoughts/shared/code_research/[research].md
 status: in_progress
 last_commit: [git hash or "unknown"]
 ---
@@ -96,12 +96,13 @@ last_commit: [git hash or "unknown"]
 ```
 ✅ Progress saved!
 
-📁 Session: thoughts/shared/sessions/...
-📋 Plan: thoughts/shared/plans/...
+📁 Session: thoughts/shared/code_sessions/CSNNN_...
+📋 Plan: thoughts/shared/code_plans/...
 
-To resume: /6_resume_work thoughts/shared/sessions/...
+To resume: /cr_resume_session thoughts/shared/code_sessions/CSNNN_...
 ```
 
 ## Guidelines
 - Be specific: future-you needs exact context.
 - Include the next concrete action and where to resume.
+

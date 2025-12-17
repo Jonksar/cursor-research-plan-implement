@@ -1,8 +1,8 @@
-# 9_generate_guidelines
+# g0_research_guidelines
 
 You are tasked with generating **domain-specific engineering guidelines** for the current repository, using **Perplexity search** and **GitHub code search** for evidence-based best practices.
 
-Guidelines MUST be written (overwritten) to: `thoughts/shared/guidelines/<domain_slug>.md`
+Guidelines MUST be written (overwritten) to: `thoughts/shared/guidelines/GRNNN_<domain_slug>.md`
 
 ## Process
 
@@ -18,7 +18,8 @@ Guidelines MUST be written (overwritten) to: `thoughts/shared/guidelines/<domain
 
 3. Write guideline files
    - Ensure `thoughts/shared/guidelines/` exists.
-   - Write/overwrite one file per domain: `thoughts/shared/guidelines/<domain_slug>.md`.
+   - Determine sequence number (GR001...) for tracking, but use slug in filename for readability if preferred, or keep structure `GRNNN_slug.md`.
+   - Write/overwrite one file per domain: `thoughts/shared/guidelines/GRNNN_<domain_slug>.md`.
 
 ## Output requirements
 
@@ -68,6 +69,6 @@ sources:
 - Avoid repo-specific descriptions.
 - Keep guidelines **generic** and broadly applicable; don’t tailor rules to this repo.
 - If you mention checks, keep them illustrative (examples), not required for automation.
-- `/11_generate_fix_patterns` is responsible for deriving automatic matchers.
-
+- `/g2_generate_patterns` is responsible for deriving automatic matchers.
+```
 

@@ -1,11 +1,11 @@
-# 4_implement_plan
+# c2_code_implement
 
-You are tasked with implementing an approved plan from `thoughts/shared/plans/`.
+You are tasked with implementing an approved plan from `thoughts/shared/code_plans/`.
 
 ## Getting started
 
 - If the user provides a plan path: open and read the plan fully.
-- If no plan path is provided: ask for one.
+- If no plan path is provided: ask for one (look in `thoughts/shared/code_plans/`).
 
 Then:
 - Note any existing `- [x]` checkmarks (resume from the first unchecked item).
@@ -43,3 +43,4 @@ If the plan already has checkmarks:
 - Only re-verify prior work if something looks off.
 
 Remember: implement a good solution, not just check boxes.
+

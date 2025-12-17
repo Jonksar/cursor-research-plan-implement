@@ -48,23 +48,23 @@ cp -r thoughts your-repo/
 
 **Standard Approach:**
 ```
-/1_research_codebase
+/c0_research_codebase
 > How does user authentication work in this codebase?
 
-/2_create_plan
+/c1_code_plan
 > I need to add two-factor authentication
 
-/4_implement_plan
-> thoughts/shared/plans/two_factor_auth.md
+/c2_code_implement
+> thoughts/shared/code_plans/CP001_two_factor_auth.md
 ```
 
 **Test-Driven Approach:**
 ```
-/8_define_test_cases
+/t1_plan_tests
 > Two-factor authentication for user login
 
 # Design tests, then implement feature
-/4_implement_plan
+/c2_code_implement
 > Implement 2FA to make tests pass
 ```
 
@@ -254,104 +254,50 @@ your-repo/
 
 ## Command Reference
 
-### Core Workflow Commands
+### Code Domain (`c`)
+*Focus: Implementation, Architecture, Logic*
 
-### `/1_research_codebase`
-- **Purpose**: Deep dive into codebase
-- **Input**: Research question
-- **Output**: Research document
-- **Agents Used**: All locator/analyzer agents
+| Command | File | Output | Purpose |
+| :--- | :--- | :--- | :--- |
+| `/c0_research_codebase` | `c0_research_codebase.md` | `thoughts/shared/code_research/CRNNN_*.md` | Deep dive into existing code |
+| `/c1_code_plan` | `c1_code_plan.md` | `thoughts/shared/code_plans/CPNNN_*.md` | Implementation planning |
+| `/c1a_plan_incremental` | `c1a_plan_incremental.md` | `thoughts/shared/code_plans/CPINNN_*.md` | Phasing large plans |
+| `/c2_code_implement` | `c2_code_implement.md` | - | Execution of plans |
+| `/c3_code_validate` | `c3_code_validate.md` | `thoughts/shared/code_validate/CVNNN_*.md` | Verification reports |
 
-### `/2_create_plan`
-- **Purpose**: Create implementation plan
-- **Input**: Requirements/ticket
-- **Output**: Phased plan document
-- **Interactive**: Yes
+### Session Management (`cs`/`cr`)
+*Focus: Context, State, Resume*
 
-### `/3_validate_plan`
-- **Purpose**: Verify implementation
-- **Input**: Plan path (optional)
-- **Output**: Validation report
+| Command | File | Output | Purpose |
+| :--- | :--- | :--- | :--- |
+| `/cs_save_session` | `cs_save_session.md` | `thoughts/shared/code_sessions/CSNNN_*.md` | Checkpoints and summaries |
+| `/cr_resume_session` | `cr_resume_session.md` | - | Restore context |
 
-### `/4_implement_plan`
-- **Purpose**: Execute implementation
-- **Input**: Plan path
-- **Output**: Completed implementation
+### UX & Design Domain (`u`)
+*Focus: User Experience, Interface, Visuals*
 
-## Session Management
+| Command | File | Output | Purpose |
+| :--- | :--- | :--- | :--- |
+| `/u0_research_ux` | `u0_research_ux.md` | `thoughts/shared/ux_research/URNNN_*.md` | Competitor/User/Heuristic research |
+| `/u1_plan_ux` | `u1_plan_ux.md` | `thoughts/shared/ux_plans/UPNNN_*.md` | Flows, Information Architecture |
+| `/u2_design_ui` | `u2_design_ui.md` | `thoughts/shared/ui_designs/UDNNN_*.md` | UI Specs, Component states |
+| `/u3_validate_ux` | `u3_validate_ux.md` | `thoughts/shared/ux_validate/UVNNN_*.md` | Design reviews, Visual QA |
 
-The framework supports saving and resuming work through persistent documentation:
+### Testing Domain (`t`)
+*Focus: QA, Test Cases*
 
-### `/5_save_progress`
-- **Purpose**: Save work progress and context
-- **Input**: Current work state
-- **Output**: Session summary and checkpoint
-- **Creates**: `thoughts/shared/sessions/` document
+| Command | File | Output | Purpose |
+| :--- | :--- | :--- | :--- |
+| `/t1_plan_tests` | `t1_plan_tests.md` | `thoughts/shared/test_plans/TPNNN_*.md` | Defining test cases (DSL/Comment-first) |
 
-### `/6_resume_work`
-- **Purpose**: Resume previously saved work
-- **Input**: Session summary path or auto-discover
-- **Output**: Restored context and continuation
-- **Reads**: Session, plan, and research documents
+### Guidelines Domain (`g`)
+*Focus: Standards, Best Practices*
 
-### Saving Progress (`/5_save_progress`)
-
-When you need to pause work:
-```
-/5_save_progress
-> Need to stop working on the payment feature
-
-# Creates:
-- Session summary in thoughts/shared/sessions/
-- Progress checkpoint in the plan
-- Work status documentation
-```
-
-### Resuming Work (`/6_resume_work`)
-
-To continue where you left off:
-```
-/6_resume_work
-> thoughts/shared/sessions/2025-01-06_payment_feature.md
-
-# Restores:
-- Full context from session
-- Plan progress state
-- Research findings
-- Todo list
-```
-
-### Progress Tracking
-
-Plans track progress with checkboxes:
-- `- [ ]` Not started
-- `- [x]` Completed
-- Progress checkpoints document partial completion
-
-When resuming, implementation continues from first unchecked item or documented checkpoint.
-
-### Session Documents
-
-Session summaries include:
-- Work completed in session
-- Current state and blockers
-- Next steps to continue
-- Commands to resume
-- File changes and test status
-
-This enables seamless context switching between features or across days/weeks.
-
-### `/7_research_cloud`
-- **Purpose**: Analyze cloud infrastructure (READ-ONLY)
-- **Input**: Cloud platform and focus area
-- **Output**: Infrastructure analysis document
-- **Creates**: `thoughts/shared/cloud/` documents
-
-### `/8_define_test_cases`
-- **Purpose**: Design acceptance test cases using DSL approach
-- **Input**: Feature/functionality to test
-- **Output**: Test case definitions in comments + required DSL functions
-- **Approach**: Comment-first, follows existing test patterns
+| Command | File | Output | Purpose |
+| :--- | :--- | :--- | :--- |
+| `/g0_research_guidelines` | `g0_research_guidelines.md` | `thoughts/shared/guidelines/GRNNN_*.md` | Auditing/Discovering patterns |
+| `/g1_plan_fixes` | `g1_plan_fixes.md` | `thoughts/shared/guideline_plans/GPNNN_*.md` | Planning systemic fixes |
+| `/g2_generate_patterns` | `g2_generate_patterns.md` | `thoughts/shared/guideline_patterns/GPATNNN_*.yaml` | Creating fix patterns |
 
 ## Cursor Rules & Commands
 

@@ -61,3 +61,4 @@ Return the full plan markdown file content in the same structure as `.cursor/com
 - Don’t propose speculative refactors; prioritize guideline-aligned fixes that are clearly supported by the violations list.
 
 
+
