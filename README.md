@@ -4,14 +4,23 @@ A structured workflow framework for AI-assisted software development that emphas
 
 ## 🚀 Quick Start
 
-```bash
-# Run the setup script
-./setup.sh /path/to/your/repo
+Run the setup script to install the framework into your repository:
 
-# Or manually copy files
+```bash
+./setup.sh /path/to/your/repo
+```
+
+The script will guide you through:
+1.  **Installation Method**: Copy files (standard) or Symlink (for development/syncing).
+2.  **MCP Setup**: Automatically configures required MCP servers (Perplexity, etc.).
+
+Alternatively, you can manually copy the files:
+```bash
 cp -r .cursor /path/to/your/repo/
 cp -r thoughts /path/to/your/repo/
 cp PLAYBOOK.md /path/to/your/repo/
+# Run MCP setup manually
+python3 mcp_setup.py --repo-root /path/to/your/repo/
 ```
 
 ## 📁 What's Included
@@ -19,20 +28,19 @@ cp PLAYBOOK.md /path/to/your/repo/
 ```
 .cursor-framework-adoption/
 ├── .cursor/
-│   ├── commands/                # Numbered workflow slash commands (Cursor)
-│       ├── 1_research_codebase.md
-│       ├── ...
-│       ├── 9_generate_guidelines.md
-│       ├── 12_research_ux.md
-│       └── (see full list in .cursor/commands/)
+│   ├── commands/                # Workflow slash commands (Cursor)
+│   │   ├── c0_research_codebase.md
+│   │   ├── c1_code_plan.md
+│   │   ├── ...
+│   │   └── (see PLAYBOOK.md for full list)
 │   └── rules/                   # Cursor Rules (always-on and contextual)
 │       └── research-plan-implement.mdc
 ├── thoughts/                    # Context storage structure
 │   └── shared/
-│       ├── research/
-│       ├── plans/
-│       ├── sessions/
-│       └── cloud/
+│       ├── code_research/
+│       ├── code_plans/
+│       ├── code_sessions/
+│       └── ...
 ├── PLAYBOOK.md                  # Comprehensive documentation
 ├── setup.sh                     # Automated setup script
 └── README.md                    # This file
@@ -73,20 +81,20 @@ flowchart TD
 ### Phase Descriptions
 
 **Research & Design**
-- **ux_research**: Gather user insights and requirements (`/12_research_ux`)
-- **ux_plan**: Define user journeys and information architecture (`/13_plan_ux`)
-- **ui_plan**: Create visual designs and interface specifications
-- **ux_validate**: Confirm the solution meets user needs
+- **ux_research**: Gather user insights and requirements (`/u0_research_ux`)
+- **ux_plan**: Define user journeys and information architecture (`/u1_plan_ux`)
+- **ui_plan**: Create visual designs and interface specifications (`/u2_design_ui`)
+- **ux_validate**: Confirm the solution meets user needs (`/u3_validate_ux`)
 
 **Guidelines Flow**
-- **generate_guidelines**: Establish engineering standards and patterns (`/9_generate_guidelines`)
-- **plan_guideline_fixes**: Strategy to remediate guideline violations (`/11_generate_fix_patterns`)
+- **generate_guidelines**: Establish engineering standards and patterns (`/g0_research_guidelines`)
+- **plan_guideline_fixes**: Strategy to remediate guideline violations (`/g1_plan_fixes`)
 
 **Development Flow**
-- **research_codebase** (Optional): Analyze existing code to inform technical planning (`/1_research_codebase`)
-- **code_plan**: Create a detailed technical implementation plan (`/2_create_plan`)
-- **code_implement**: Execute the plan and write the code (`/4_implement_plan`)
-- **code_validate**: Verify the implementation against requirements (`/3_validate_plan`)
+- **research_codebase** (Optional): Analyze existing code to inform technical planning (`/c0_research_codebase`)
+- **code_plan**: Create a detailed technical implementation plan (`/c1_code_plan`)
+- **code_implement**: Execute the plan and write the code (`/c2_code_implement`)
+- **code_validate**: Verify the implementation against requirements (`/c3_code_validate`)
 
 ## 📖 Documentation
 
@@ -114,49 +122,40 @@ After installation, customize for your project:
 
 ```markdown
 # 1. Research the existing codebase
-/1_research_codebase
+/c0_research_codebase
 > How does the authentication system work?
 
 # 2. Create a plan based on research
-/2_create_plan
+/c1_code_plan
 > Add OAuth2 integration to the authentication system
 
 # 3. Implement the plan
-/4_implement_plan
-> thoughts/shared/plans/oauth2_integration.md
+/c2_code_implement
+> thoughts/shared/code_plans/CP001_oauth2_integration.md
 
 # 4. Validate implementation matches plan
-/3_validate_plan
+/c3_code_validate
 
 # 5. Save progress if needed to pause
-/5_save_progress
+/cs_save_session
 
 # 6. Resume work later
-/6_resume_work
-> thoughts/shared/sessions/2025-01-06_oauth2.md
-```
-
-## ☁️ Cloud Analysis Example
-
-```markdown
-# Analyze your cloud infrastructure (READ-ONLY)
-/7_research_cloud
-> Azure
-> all
+/cr_resume_session
+> thoughts/shared/code_sessions/CS001_oauth2.md
 ```
 
 ## 🧪 Test-Driven Development Example
 
 ```markdown
 # 1. Define test cases for a new feature
-/8_define_test_cases
+/t1_plan_tests
 > Partner enrollment workflow with kit orders
 
 # 2. Implement the DSL functions and tests
 # (Follow the patterns discovered by the agent)
 
 # 3. Implement the actual feature to make tests pass
-/4_implement_plan
+/c2_code_implement
 > Implement partner enrollment logic
 ```
 

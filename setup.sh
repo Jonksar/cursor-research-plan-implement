@@ -5,6 +5,9 @@
 
 set -e
 
+# Get the directory where this script is located (Source Directory)
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 echo "🚀 Cursor Framework Setup"
 echo "================================"
 echo ""
@@ -22,27 +25,50 @@ if [ ! -d "$TARGET_DIR" ]; then
     exit 1
 fi
 
+# Convert Target Dir to absolute path
+TARGET_DIR="$(cd "$TARGET_DIR" && pwd)"
+
+echo ""
+if [ -z "$INSTALL_METHOD" ]; then
+    echo "Select Installation Method:"
+    echo "1) Copy (Standard) - Copies files to your repo. You can modify them freely."
+    echo "2) Symlink (Dev/Sync) - Links files to this repo. Updates here are reflected immediately."
+    read -p "Choose option (1/2): " INSTALL_METHOD
+fi
+
+SYMLINK_MODE="false"
+if [ "$INSTALL_METHOD" = "2" ]; then
+    SYMLINK_MODE="true"
+    echo "🔗 Symlink mode selected."
+else
+    echo "📋 Copy mode selected."
+fi
+
 # Check if .cursor already exists
+UPDATE_MODE="false"
 if [ -d "$TARGET_DIR/.cursor" ]; then
+    echo ""
     echo "ℹ️  .cursor directory already exists in $TARGET_DIR"
 
     # Check for existing commands and rules
     if [ -d "$TARGET_DIR/.cursor/commands" ] || [ -d "$TARGET_DIR/.cursor/rules" ]; then
-        echo "📦 Found existing framework installation"
-        echo ""
-        echo "What would you like to do?"
-        echo "1) Update framework (overwrite with latest versions)"
-        echo "2) Skip existing files (only add new ones)"
-        echo "3) Cancel"
-        read -p "Choose option (1/2/3): " INSTALL_OPTION
+        if [ -z "$INSTALL_OPTION" ]; then
+            echo "📦 Found existing framework installation"
+            echo ""
+            echo "What would you like to do?"
+            echo "1) Update/Overwrite (replaces files with new copies/links)"
+            echo "2) Skip existing files (only add new ones)"
+            echo "3) Cancel"
+            read -p "Choose option (1/2/3): " INSTALL_OPTION
+        fi
 
         case $INSTALL_OPTION in
             1)
-                echo "📥 Updating framework to latest version..."
+                echo "📥 Updating framework..."
                 UPDATE_MODE="true"
                 ;;
             2)
-                echo "🔀 Adding new files only, keeping existing ones..."
+                echo "🔀 Adding new files only..."
                 UPDATE_MODE="false"
                 ;;
             *)
@@ -54,13 +80,16 @@ if [ -d "$TARGET_DIR/.cursor" ]; then
 else
     # Create .cursor if it doesn't exist
     mkdir -p "$TARGET_DIR/.cursor"
-    UPDATE_MODE="false"
+    UPDATE_MODE="false" # Default to creating
 fi
 
 # Check if thoughts already exists
 if [ -d "$TARGET_DIR/thoughts" ]; then
-    echo "⚠️  Warning: thoughts directory already exists in $TARGET_DIR"
-    read -p "Do you want to merge with existing thoughts? (y/N): " MERGE
+    if [ -z "$MERGE" ]; then
+        echo ""
+        echo "⚠️  Warning: thoughts directory already exists in $TARGET_DIR"
+        read -p "Do you want to merge with existing thoughts? (y/N): " MERGE
+    fi
     if [ "$MERGE" != "y" ] && [ "$MERGE" != "Y" ]; then
         echo "Setup cancelled"
         exit 0
@@ -78,63 +107,73 @@ mkdir -p "$TARGET_DIR/thoughts/shared/plans"
 mkdir -p "$TARGET_DIR/thoughts/shared/sessions"
 mkdir -p "$TARGET_DIR/thoughts/shared/cloud"
 
-echo "📝 Copying framework files..."
+echo "📝 Installing framework files..."
 
-# Copy Cursor commands - handle update vs skip mode
+install_file() {
+    local source="$1"
+    local target="$2"
+    local type="$3" # "copy" or "symlink"
+
+    local filename=$(basename "$source")
+    local dest="$target/$filename"
+
+    if [ -f "$dest" ] || [ -L "$dest" ]; then
+        if [ "$UPDATE_MODE" = "true" ]; then
+             rm -f "$dest"
+             if [ "$type" = "symlink" ]; then
+                ln -s "$source" "$dest"
+                echo "    🔗 Linked $filename"
+             else
+                cp "$source" "$dest"
+                echo "    🔄 Updated $filename"
+             fi
+        else
+            echo "    ⚠️  $filename already exists, skipping..."
+        fi
+    else
+        if [ "$type" = "symlink" ]; then
+            ln -s "$source" "$dest"
+            echo "    🔗 Linked $filename"
+        else
+            cp "$source" "$dest"
+            echo "    ✅ Installed $filename"
+        fi
+    fi
+}
+
+# Copy/Link Cursor commands
 echo "  Installing Cursor commands..."
-for cmd_file in .cursor/commands/*.md; do
-    filename=$(basename "$cmd_file")
-    if [ -f "$TARGET_DIR/.cursor/commands/$filename" ]; then
-        if [ "$UPDATE_MODE" = "true" ]; then
-            # In update mode, overwrite existing files
-            cp "$cmd_file" "$TARGET_DIR/.cursor/commands/"
-            echo "    🔄 Updated $filename"
-        else
-            echo "    ⚠️  $filename already exists, skipping..."
-        fi
+for cmd_file in "$SCRIPT_DIR/.cursor/commands"/*.md; do
+    if [ "$SYMLINK_MODE" = "true" ]; then
+        install_file "$cmd_file" "$TARGET_DIR/.cursor/commands" "symlink"
     else
-        cp "$cmd_file" "$TARGET_DIR/.cursor/commands/"
-        echo "    ✅ Installed $filename"
+        install_file "$cmd_file" "$TARGET_DIR/.cursor/commands" "copy"
     fi
 done
 
-# Copy Cursor rules - handle update vs skip mode
+# Copy/Link Cursor rules
 echo "  Installing Cursor rules..."
-for rule_file in .cursor/rules/*.mdc; do
-    filename=$(basename "$rule_file")
-    if [ -f "$TARGET_DIR/.cursor/rules/$filename" ]; then
-        if [ "$UPDATE_MODE" = "true" ]; then
-            # In update mode, overwrite existing files
-            cp "$rule_file" "$TARGET_DIR/.cursor/rules/"
-            echo "    🔄 Updated $filename"
-        else
-            echo "    ⚠️  $filename already exists, skipping..."
-        fi
+for rule_file in "$SCRIPT_DIR/.cursor/rules"/*.mdc; do
+    if [ "$SYMLINK_MODE" = "true" ]; then
+        install_file "$rule_file" "$TARGET_DIR/.cursor/rules" "symlink"
     else
-        cp "$rule_file" "$TARGET_DIR/.cursor/rules/"
-        echo "    ✅ Installed $filename"
+        install_file "$rule_file" "$TARGET_DIR/.cursor/rules" "copy"
     fi
 done
 
-# Copy playbook if it doesn't exist or ask to update
-if [ -f "$TARGET_DIR/PLAYBOOK.md" ]; then
-    echo ""
-    read -p "PLAYBOOK.md already exists. Update it? (y/N): " UPDATE_PLAYBOOK
-    if [ "$UPDATE_PLAYBOOK" = "y" ] || [ "$UPDATE_PLAYBOOK" = "Y" ]; then
-        cp PLAYBOOK.md "$TARGET_DIR/"
-        echo "✅ Updated PLAYBOOK.md"
-    else
-        echo "ℹ️  Kept existing PLAYBOOK.md"
-    fi
+# Copy/Link PLAYBOOK.md
+echo "  Installing PLAYBOOK.md..."
+if [ "$SYMLINK_MODE" = "true" ]; then
+    install_file "$SCRIPT_DIR/PLAYBOOK.md" "$TARGET_DIR" "symlink"
 else
-    cp PLAYBOOK.md "$TARGET_DIR/"
-    echo "✅ Installed PLAYBOOK.md"
+    install_file "$SCRIPT_DIR/PLAYBOOK.md" "$TARGET_DIR" "copy"
 fi
 
-# Create a sample research template
+# Create a sample research template (Always copy templates)
 echo "📚 Creating sample templates..."
 
-cat > "$TARGET_DIR/thoughts/shared/research/TEMPLATE.md" << 'EOF'
+if [ ! -f "$TARGET_DIR/thoughts/shared/research/TEMPLATE.md" ]; then
+    cat > "$TARGET_DIR/thoughts/shared/research/TEMPLATE.md" << 'EOF'
 ---
 date: YYYY-MM-DD HH:MM:SS
 researcher: Claude
@@ -160,8 +199,10 @@ status: complete
 ## Open Questions
 [Areas needing further investigation]
 EOF
+fi
 
-cat > "$TARGET_DIR/thoughts/shared/plans/TEMPLATE.md" << 'EOF'
+if [ ! -f "$TARGET_DIR/thoughts/shared/plans/TEMPLATE.md" ]; then
+    cat > "$TARGET_DIR/thoughts/shared/plans/TEMPLATE.md" << 'EOF'
 # Implementation Plan Template
 
 ## Overview
@@ -189,47 +230,49 @@ cat > "$TARGET_DIR/thoughts/shared/plans/TEMPLATE.md" << 'EOF'
 ## Testing Strategy
 [How we'll verify this works]
 EOF
+fi
+
+# MCP Setup
+echo ""
+echo "🔌 MCP Server Setup"
+if [ -f "$SCRIPT_DIR/mcp_setup.py" ]; then
+    # Check if python3 is available
+    if command -v python3 &> /dev/null; then
+        if [ -z "$SETUP_MCP" ]; then
+             read -p "Do you want to configure required MCP servers (Sub-agents, Perplexity, etc.)? (y/N): " SETUP_MCP
+        fi
+        
+        if [ "$SETUP_MCP" = "y" ] || [ "$SETUP_MCP" = "Y" ]; then
+            echo "Configuring MCP servers..."
+            python3 "$SCRIPT_DIR/mcp_setup.py" --repo-root "$TARGET_DIR"
+            echo "✅ MCP servers configured."
+        else
+            echo "Skipping MCP setup."
+        fi
+    else
+         echo "⚠️  python3 not found. Skipping MCP setup."
+    fi
+fi
 
 echo ""
 if [ "$UPDATE_MODE" = "true" ]; then
     echo "🎉 Framework Updated Successfully!"
     echo "===================================="
-    echo ""
-    echo "Framework updated in: $TARGET_DIR"
-    echo ""
-    echo "📋 Update Summary:"
-    echo "- Cursor commands and rules updated to latest versions"
-    echo "- Your research documents and plans are preserved"
-    echo ""
-    echo "💡 To revert changes:"
-    echo "- Use git: 'git checkout -- .cursor/'"
-    echo ""
-    echo "📖 To update framework in the future:"
-    echo "- Run: ./setup.sh $TARGET_DIR"
-    echo "- Choose option 1 (Update framework)"
 else
     echo "🎉 Setup Complete!"
     echo "=================="
-    echo ""
-    echo "Framework installed in: $TARGET_DIR"
-    echo ""
-    echo "📖 Next Steps:"
-    echo "1. Review $TARGET_DIR/PLAYBOOK.md for usage instructions"
-    echo "2. Try the workflow with a simple task:"
-    echo "   - /1_research_codebase"
-    echo "   - /2_create_plan"
-    echo "   - /4_implement_plan"
-    echo ""
-    echo "💡 Tips:"
-    echo "- Commands are numbered to show the typical flow"
-    echo "- Research documents accumulate in thoughts/shared/research/"
-    echo "- Plans serve as technical specifications"
-    echo "- Use parallel agents for faster research"
-    echo "- Use git to track and manage framework changes"
-    echo ""
-    echo "🔄 To update framework in the future:"
-    echo "- Run: ./setup.sh $TARGET_DIR"
-    echo "- Choose option 1 (Update framework)"
 fi
+echo ""
+echo "Framework installed in: $TARGET_DIR"
+if [ "$SYMLINK_MODE" = "true" ]; then
+    echo "Mode: Symlink (files are linked to source)"
+else
+    echo "Mode: Copy (files are independent copies)"
+fi
+echo ""
+echo "📖 Next Steps:"
+echo "1. Review $TARGET_DIR/PLAYBOOK.md for usage instructions"
+echo "2. Restart Cursor to load new MCP settings (if applied)"
+echo "3. Try the workflow!"
 echo ""
 echo "Happy coding! 🚀"

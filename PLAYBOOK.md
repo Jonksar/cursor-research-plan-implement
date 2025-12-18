@@ -32,14 +32,34 @@ The Research-Plan-Implement Framework is a structured approach to AI-assisted so
 
 ### Installation
 
+**Recommended: Use the setup script**
+
+```bash
+./setup.sh /path/to/your/repo
+```
+
+This script offers two modes:
+*   **Copy (Standard)**: Copies files to your repo. You can modify them freely.
+*   **Symlink (Dev)**: Links files to the framework repo. Useful if you want to keep up-to-date with framework changes automatically.
+
+It also configures the required **MCP servers**.
+
+**Manual Installation**
+
 1. **Copy framework files to your repository:**
 ```bash
 # From the framework directory
 cp -r .cursor your-repo/
 cp -r thoughts your-repo/
+cp PLAYBOOK.md your-repo/
 ```
 
-2. **Customize for your project:**
+2. **Configure MCP Servers:**
+```bash
+python3 mcp_setup.py --repo-root your-repo/
+```
+
+3. **Customize for your project:**
 - Edit `.cursor/commands/*.md` to match your tooling
 - Update `.cursor/rules/*.mdc` to encode project conventions
 - (Optional) Add project-specific guidance used by your team/tooling
@@ -73,32 +93,26 @@ cp -r thoughts your-repo/
 ```
 your-repo/
 ├── .cursor/                      # Cursor Configuration
-│   ├── commands/                 # Numbered workflow slash commands
-│       ├── 1_research_codebase.md
-│       ├── 2_create_plan.md
-│       ├── 3_validate_plan.md
-│       ├── 4_implement_plan.md
-│       ├── 5_save_progress.md   # Save work session
-│       ├── 6_resume_work.md     # Resume saved work
-│       ├── 7_research_cloud.md  # Cloud infrastructure analysis
-│       └── 8_define_test_cases.md # Design acceptance test cases
-│   └── rules/                    # Cursor Rules (always-on + contextual)
+│   ├── commands/                 # Workflow slash commands
+│   │   ├── c0_research_codebase.md
+│   │   ├── c1_code_plan.md
+│   │   ├── c2_code_implement.md
+│   │   ├── c3_code_validate.md
+│   │   └── ... (see Command Reference)
+│   └── rules/                    # Cursor Rules
 │       └── research-plan-implement.mdc
 ├── thoughts/                     # Persistent Context Storage
 │   └── shared/
-│       ├── research/            # Research findings
-│       │   └── YYYY-MM-DD_*.md
-│       ├── plans/               # Implementation plans
-│       │   └── feature_name.md
-│       ├── sessions/            # Work session summaries
-│       │   └── YYYY-MM-DD_*.md
-│       └── cloud/               # Cloud infrastructure analyses
-│           └── platform_*.md
+│       ├── code_research/       # Research findings
+│       ├── code_plans/          # Implementation plans
+│       ├── code_sessions/       # Work session summaries
+│       ├── ux_research/         # UX studies
+│       └── ... (see Command Reference)
 ```
 
 ## Workflow Phases
 
-### Phase 1: Research (`/1_research_codebase`)
+### Phase 1: Research (`/c0_research_codebase`)
 
 **Purpose**: Comprehensive exploration and understanding
 
@@ -106,11 +120,11 @@ your-repo/
 1. Invoke command with research question
 2. Cursor Agent uses codebase search + targeted file reads to investigate
 3. Findings compiled into structured document
-4. Saved to `thoughts/shared/research/`
+4. Saved to `thoughts/shared/code_research/`
 
 **Example**:
 ```
-/1_research_codebase
+/c0_research_codebase
 > How does the payment processing system work?
 ```
 
@@ -120,7 +134,7 @@ your-repo/
 - Patterns and conventions
 - Related components
 
-### Phase 2: Planning (`/2_create_plan`)
+### Phase 2: Planning (`/c1_code_plan`)
 
 **Purpose**: Create detailed, phased implementation plan
 
@@ -128,11 +142,11 @@ your-repo/
 1. Read requirements and research
 2. Interactive planning with user
 3. Generate phased approach
-4. Save to `thoughts/shared/plans/`
+4. Save to `thoughts/shared/code_plans/`
 
 **Example**:
 ```
-/2_create_plan
+/c1_code_plan
 > Add Stripe payment integration based on the research
 ```
 
@@ -157,7 +171,7 @@ your-repo/
 [...]
 ```
 
-### Phase 3: Implementation (`/4_implement_plan`)
+### Phase 3: Implementation (`/c2_code_implement`)
 
 **Purpose**: Execute plan systematically
 
@@ -169,8 +183,8 @@ your-repo/
 
 **Example**:
 ```
-/4_implement_plan
-> thoughts/shared/plans/stripe_integration.md
+/c2_code_implement
+> thoughts/shared/code_plans/CP001_stripe_integration.md
 ```
 
 **Progress Tracking**:
@@ -178,7 +192,7 @@ your-repo/
 - TodoWrite for task management
 - Communicates blockers clearly
 
-### Phase 4: Validation (`/3_validate_plan`)
+### Phase 4: Validation (`/c3_code_validate`)
 
 **Purpose**: Verify implementation matches plan
 
@@ -191,7 +205,7 @@ your-repo/
 
 **Example**:
 ```
-/3_validate_plan
+/c3_code_validate
 > Validate the Stripe integration implementation
 ```
 
@@ -201,7 +215,7 @@ your-repo/
 - Code review findings
 - Manual testing requirements
 
-### Test-Driven Development (`/8_define_test_cases`)
+### Test-Driven Development (`/t1_plan_tests`)
 
 **Purpose**: Design acceptance test cases before implementation
 
@@ -214,7 +228,7 @@ your-repo/
 
 **Example**:
 ```
-/8_define_test_cases
+/t1_plan_tests
 > Partner enrollment workflow when ordering kit products
 ```
 
@@ -334,7 +348,7 @@ Cursor uses:
 - In Cursor, keep exploration fast by:
   - using codebase search to fan out across call sites
   - opening the authoritative entry points first
-  - queueing structured commands when helpful (e.g. `/1_research_codebase` → `/2_create_plan` → `/4_implement_plan`)
+  - queueing structured commands when helpful (e.g. `/c0_research_codebase` → `/c1_code_plan` → `/c2_code_implement`)
 
 ### 6. Design Tests Early
 - Define test cases before implementing features
@@ -448,16 +462,16 @@ If your team uses additional guidance files, add instructions for your project (
 For complex features, chain commands:
 
 ```
-/1_research_codebase
+/c0_research_codebase
 > Research current auth system
 
-/2_create_plan
+/c1_code_plan
 > Based on research, plan OAuth integration
 
-/4_implement_plan
-> thoughts/shared/plans/oauth_integration.md
+/c2_code_implement
+> thoughts/shared/code_plans/CP001_oauth_integration.md
 
-/3_validate_plan
+/c3_code_validate
 > Verify OAuth implementation
 
 # Then manually commit using git
@@ -468,27 +482,11 @@ For complex features, chain commands:
 Research multiple aspects simultaneously:
 
 ```
-/1_research_codebase
+/c0_research_codebase
 > How do authentication, authorization, and user management work together?
 ```
 
 This spawns agents to research each aspect in parallel.
-
-### Cloud Infrastructure Analysis
-
-Analyze cloud deployments without making changes:
-
-```
-/7_research_cloud
-> Azure
-> all
-
-# Analyzes:
-- Resource inventory and costs
-- Security and compliance
-- Architecture patterns
-- Optimization opportunities
-```
 
 ### Test-Driven Development Workflow
 
@@ -496,7 +494,7 @@ Design tests before implementation:
 
 ```
 # Step 1: Define test cases
-/8_define_test_cases
+/t1_plan_tests
 > Partner enrollment when customer orders a kit product
 
 # Output includes:
@@ -511,15 +509,15 @@ Design tests before implementation:
 # (Copy comment structure to test files, add function calls)
 
 # Step 4: Create plan for feature implementation
-/2_create_plan
+/c1_code_plan
 > Implement partner enrollment logic to make tests pass
 
 # Step 5: Implement the feature
-/4_implement_plan
-> thoughts/shared/plans/partner_enrollment.md
+/c2_code_implement
+> thoughts/shared/code_plans/CP001_partner_enrollment.md
 
 # Step 6: Validate tests pass
-/3_validate_plan
+/c3_code_validate
 ```
 
 **Key Benefit**: Tests are designed with existing patterns in mind, ensuring consistency across the test suite.

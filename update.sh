@@ -42,5 +42,10 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 echo "Running update process..."
 echo ""
 
-# Auto-select update option by piping "1" to setup.sh
-echo "1" | "$SCRIPT_DIR/setup.sh" "$TARGET_DIR"
+# Set variables for automated update
+export INSTALL_METHOD="1" # Copy mode
+export INSTALL_OPTION="1" # Update/Overwrite
+export MERGE="y"          # Merge thoughts
+export SETUP_MCP="y"      # Run MCP setup
+
+"$SCRIPT_DIR/setup.sh" "$TARGET_DIR"

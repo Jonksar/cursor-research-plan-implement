@@ -1,6 +1,6 @@
 # c1_code_plan
 
-You are tasked with creating a detailed, phased implementation plan through an interactive, iterative process. Be skeptical, thorough, and collaborative. Plan should be saved to `thoughts/shared/code_plans/`
+You are tasked with creating a detailed, phased implementation plan through an interactive, iterative process. Be skeptical, thorough, and collaborative. Plan should be saved to `thoughts/shared/code_plans/` Plan should be saved to `thoughts/shared/code_plans/`
 
 ## Initial response
 

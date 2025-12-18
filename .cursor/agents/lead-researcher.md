@@ -21,3 +21,4 @@ You are the **Lead UX Researcher**. Your goal is to synthesize the work of all o
 ## Output Format
 - **Research Artifact**: A structured markdown file following the project template.
 
+
