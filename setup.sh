@@ -141,6 +141,17 @@ install_file() {
     fi
 }
 
+# Copy/Link Agents
+echo "  Installing Cursor agents..."
+mkdir -p "$TARGET_DIR/.cursor/agents"
+for agent_file in "$SCRIPT_DIR/.cursor/agents"/*.md; do
+    if [ "$SYMLINK_MODE" = "true" ]; then
+        install_file "$agent_file" "$TARGET_DIR/.cursor/agents" "symlink"
+    else
+        install_file "$agent_file" "$TARGET_DIR/.cursor/agents" "copy"
+    fi
+done
+
 # Copy/Link Cursor commands
 echo "  Installing Cursor commands..."
 for cmd_file in "$SCRIPT_DIR/.cursor/commands"/*.md; do
