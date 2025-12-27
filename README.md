@@ -50,12 +50,6 @@ python3 mcp_setup.py --repo-root /path/to/your/repo/
 
 ```mermaid
 flowchart TD
-    subgraph Research_Design [Research & Design]
-        direction TB
-        UR[ux_research] --> UP[ux_plan] --> UIP[ui_plan]
-        UV[ux_validate]
-    end
-
     subgraph Guidelines_Flow [Guidelines Flow]
         GL[generate_guidelines]
         GLF[plan_guideline_fixes]
@@ -68,9 +62,6 @@ flowchart TD
     end
 
     %% Flow Connections
-    UIP --> CP
-    UIP -.-> RC
-    CV --> UV
 
     %% Guideline Connections
     GL -.->|Optional| CP
@@ -79,12 +70,6 @@ flowchart TD
 ```
 
 ### Phase Descriptions
-
-**Research & Design**
-- **ux_research**: Gather user insights and requirements (`/u0_research_ux`)
-- **ux_plan**: Define user journeys and information architecture (`/u1_plan_ux`)
-- **ui_plan**: Create visual designs and interface specifications (`/u2_design_ui`)
-- **ux_validate**: Confirm the solution meets user needs (`/u3_validate_ux`)
 
 **Guidelines Flow**
 - **generate_guidelines**: Establish engineering standards and patterns (`/g0_research_guidelines`)

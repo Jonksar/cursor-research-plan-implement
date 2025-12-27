@@ -106,7 +106,6 @@ your-repo/
 │       ├── code_research/       # Research findings
 │       ├── code_plans/          # Implementation plans
 │       ├── code_sessions/       # Work session summaries
-│       ├── ux_research/         # UX studies
 │       └── ... (see Command Reference)
 ```
 
@@ -286,16 +285,6 @@ your-repo/
 | :--- | :--- | :--- | :--- |
 | `/cs_save_session` | `cs_save_session.md` | `thoughts/shared/code_sessions/CSNNN_*.md` | Checkpoints and summaries |
 | `/cr_resume_session` | `cr_resume_session.md` | - | Restore context |
-
-### UX & Design Domain (`u`)
-*Focus: User Experience, Interface, Visuals*
-
-| Command | File | Output | Purpose |
-| :--- | :--- | :--- | :--- |
-| `/u0_research_ux` | `u0_research_ux.md` | `thoughts/shared/ux_research/URNNN_*.md` | Competitor/User/Heuristic research |
-| `/u1_plan_ux` | `u1_plan_ux.md` | `thoughts/shared/ux_plans/UPNNN_*.md` | Flows, Information Architecture |
-| `/u2_design_ui` | `u2_design_ui.md` | `thoughts/shared/ui_designs/UDNNN_*.md` | UI Specs, Component states |
-| `/u3_validate_ux` | `u3_validate_ux.md` | `thoughts/shared/ux_validate/UVNNN_*.md` | Design reviews, Visual QA |
 
 ### Testing Domain (`t`)
 *Focus: QA, Test Cases*

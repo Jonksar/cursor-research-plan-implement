@@ -20,7 +20,7 @@ Then wait for the user’s query.
 
 2. **Phase 1: Broad Research (Perplexity)**
    - **Trigger**: If the task is novel, high-level, or lacks a specific library target.
-   - **Action**: Use `mcp_perplexity_perplexity_research` to find a guide on "how to solve [problem type]".
+   - **Action**: Use `mcp_perplexity_perplexity_search` (faster, easier questions) or `mcp_perplexity_perplexity_research` (slower, harder questions) to find a guide on "how to solve [problem type], what are specific approach and library recommendations for this. What to focus on?".
    - **Goal**: Identify standard approaches, trade-offs, and candidate libraries.
    - **Criteria**: Prioritize libraries with high GitHub star counts, recent maintenance, and active community support.
 
