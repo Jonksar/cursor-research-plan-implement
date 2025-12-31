@@ -55,6 +55,10 @@ flowchart TD
         GLF[plan_guideline_fixes]
     end
 
+    subgraph Product_Flow [Product Flow]
+        PR[user_problem_research]
+    end
+
     subgraph Dev_Flow [Development Flow]
         direction LR
         RC[research_codebase] -.->|Optional| CP[code_plan]
@@ -62,6 +66,7 @@ flowchart TD
     end
 
     %% Flow Connections
+    PR -.->|Informs| CP
 
     %% Guideline Connections
     GL -.->|Optional| CP
@@ -70,6 +75,9 @@ flowchart TD
 ```
 
 ### Phase Descriptions
+
+**Product Flow**
+- **user_problem_research**: Apply JTBD framework to identify user problems and product gaps (`/p1_user_problem_research`)
 
 **Guidelines Flow**
 - **generate_guidelines**: Establish engineering standards and patterns (`/g0_research_guidelines`)
@@ -105,6 +113,7 @@ After installation, customize for your project:
 
 ## 💡 Typical Workflow Example
 
+### Development Workflow
 ```markdown
 # 1. Research the existing codebase
 /c0_research_codebase
@@ -127,6 +136,24 @@ After installation, customize for your project:
 # 6. Resume work later
 /cr_resume_session
 > thoughts/shared/code_sessions/CS001_oauth2.md
+```
+
+### Product Research Workflow
+```markdown
+# 1. Research user problem using JTBD framework
+/p1_user_problem_research
+> Problem Area: File upload for Xero integration
+> User Context: Accountant importing bank statements
+> Product URL: https://app.example.com/xero/upload
+> Additional Context: Users confused about file formats
+
+# 2. Use insights to create implementation plan
+/c1_code_plan
+> Improve Xero file upload UX based on P001_xero_upload.md
+
+# 3. Implement improvements
+/c2_code_implement
+> thoughts/shared/code_plans/CP001_xero_upload_improvements.md
 ```
 
 ## 🧪 Test-Driven Development Example

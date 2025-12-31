@@ -106,6 +106,7 @@ your-repo/
 │       ├── code_research/       # Research findings
 │       ├── code_plans/          # Implementation plans
 │       ├── code_sessions/       # Work session summaries
+│       ├── user_problem/        # JTBD user problem research
 │       └── ... (see Command Reference)
 ```
 
@@ -265,6 +266,42 @@ your-repo/
 
 **Key Principle**: Comment-first approach - design tests as specifications before any implementation.
 
+### Product Research (`/p1_user_problem_research`)
+
+**Purpose**: Systematically research user problems using Jobs-to-be-Done framework
+
+**Process**:
+1. Provide problem area, user context, and product URL(s)
+2. AI uses browser tools to explore the product
+3. Delegates codebase research to sub-agent
+4. Applies JTBD framework to identify core job
+5. Creates status quo flowcharts highlighting problems
+6. Documents gap between current and desired state
+7. Saves to `thoughts/shared/user_problem/`
+
+**Example**:
+```
+/p1_user_problem_research
+> Problem Area: Xero integration file upload
+> User Context: Accountant uploading bank statements
+> Product URL: https://app.example.com/xero/upload
+> Additional Context: Users report confusion about file formats and entities
+```
+
+**Output**: Comprehensive user problem research document with:
+- JTBD statement: "When [situation], I want to [job], so I can [outcome] without [pain point]"
+- Problem evidence with screenshots and code references
+- Current state flowchart (mermaid) highlighting friction
+- Desired state flowchart showing ideal experience
+- Critical analysis of gaps and recommendations
+
+**Key Features**:
+- Uses browser tools for product exploration
+- Leverages sub-agents for clean context management
+- Evidence-based analysis (screenshots, code, user quotes)
+- Visual flowcharts using mermaid diagrams
+- Links to codebase research artifacts
+
 ## Command Reference
 
 ### Code Domain (`c`)
@@ -301,6 +338,13 @@ your-repo/
 | `/g0_research_guidelines` | `g0_research_guidelines.md` | `thoughts/shared/guidelines/GRNNN_*.md` | Auditing/Discovering patterns |
 | `/g1_plan_fixes` | `g1_plan_fixes.md` | `thoughts/shared/guideline_plans/GPNNN_*.md` | Planning systemic fixes |
 | `/g2_generate_patterns` | `g2_generate_patterns.md` | `thoughts/shared/guideline_patterns/GPATNNN_*.yaml` | Creating fix patterns |
+
+### Product Domain (`p`)
+*Focus: User Research, JTBD, Problem Analysis*
+
+| Command | File | Output | Purpose |
+| :--- | :--- | :--- | :--- |
+| `/p1_user_problem_research` | `p1_user_problem_research.md` | `thoughts/shared/user_problem/PNNN_*.md` | JTBD-based user problem research |
 
 ## Cursor Rules & Commands
 
