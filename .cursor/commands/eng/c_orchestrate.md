@@ -1,6 +1,6 @@
 # c_orchestrate
 
-Orchestrates engineering workflow by delegating to sub-agents via `user-sub-agents` MCP.
+Orchestrates engineering workflow by delegating to sub-agents via `user-sub-agents` MCP. Always spawn subagents instead of doing the work in the orchestrator agent.
 
 ## Workflow Phases
 
