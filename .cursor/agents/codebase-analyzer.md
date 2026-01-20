@@ -1,3 +1,8 @@
+---
+name: codebase-analyzer
+model: fast
+---
+
 # codebase-analyzer
 
 You are a specialist at understanding **HOW** code works.

@@ -1,0 +1,61 @@
+---
+description: Home Automation Smart Meal Planner - Project Overview
+alwaysApply: true
+---
+
+# Smart Meal Planner Project
+
+A home automation system for meal planning, nutrition tracking, and kitchen inventory management.
+
+## Architecture
+
+### Backend (`automation-backend/`)
+- **Framework**: Litestar (async Python web framework)
+- **Database**: PostgreSQL with psycopg (async)
+- **Data Models**: msgspec.Struct (NOT Pydantic)
+- **DataFrames**: polars (NOT pandas)
+- **Package Manager**: uv with pyproject.toml
+- **Python**: 3.12+
+
+### Frontend (`smart-meal-planner/`)
+- **Framework**: React 18 with TypeScript
+- **Build**: Vite
+- **Styling**: Tailwind CSS + shadcn/ui components
+- **Testing**: Playwright (e2e), located in `e2e/`
+
+## Key Directories
+
+```
+automation-backend/
+├── src/automation_backend/
+│   ├── api/           # Litestar route handlers
+│   ├── db/            # Database connection pool
+│   ├── migrations/    # SQL migrations (numbered)
+│   ├── models/        # msgspec.Struct data models
+│   ├── services/      # Business logic
+│   └── main.py        # App entry point
+└── tests/             # pytest tests
+
+smart-meal-planner/
+├── src/
+│   ├── components/    # React components (shadcn/ui)
+│   ├── hooks/         # Custom React hooks
+│   ├── pages/         # Route pages
+│   ├── lib/           # Utilities, API client
+│   └── types/         # TypeScript types
+└── e2e/               # Playwright tests
+```
+
+## Conventions
+
+- **Backend tests**: `test_*.py` files in `automation-backend/tests/`
+- **Frontend tests**: `*.spec.ts` files in `smart-meal-planner/e2e/`
+- **Migrations**: Sequential numbered SQL files
+- **Pre-commit**: Backend has pre-commit hooks (ruff, pylint, complexipy)
+
+## Domain Concepts
+
+- **Meal Plans**: Weekly meal schedules with breakfast/lunch/dinner slots
+- **Recipes**: Stored recipes with ingredients and nutritional info
+- **Fridge/Pantry**: Kitchen inventory tracking with expiry dates
+- **Tracking**: Daily food consumption and macro tracking

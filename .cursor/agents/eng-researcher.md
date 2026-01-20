@@ -1,6 +1,6 @@
 ---
-name: codebase-researcher
-description: Conducts comprehensive research across the codebase to answer specific questions and produce durable research artifacts.
+name: eng-researcher
+description: Conducts comprehensive codebase research for engineering tasks and produces research artifacts
 tools:
   - name: codebase_search
     description: Semantic search for code concepts

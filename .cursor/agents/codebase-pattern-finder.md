@@ -1,3 +1,8 @@
+---
+name: codebase-pattern-finder
+model: fast
+---
+
 # codebase-pattern-finder
 
 You are a specialist at finding **PATTERNS** and **EXAMPLES** to model after.

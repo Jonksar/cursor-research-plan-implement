@@ -1,0 +1,64 @@
+---
+description: Testing conventions for backend and frontend
+globs: ["**/test_*.py", "**/tests/**/*.py", "**/*.spec.ts", "**/*.spec.tsx", "**/e2e/**/*.ts"]
+---
+
+# Testing Conventions
+
+## Backend (pytest)
+
+### Structure
+- Tests in `automation-backend/tests/`
+- File naming: `test_<module>.py`
+- Use pytest-asyncio for async tests
+
+### Patterns
+```python
+import pytest
+
+@pytest.fixture
+async def sample_data():
+    return {"key": "value"}
+
+async def test_feature(sample_data):
+    assert sample_data["key"] == "value"
+```
+
+### Configuration
+- `asyncio_mode = "auto"` (no need for `@pytest.mark.asyncio`)
+- Timeout: 30 seconds per test
+- Fixtures in `conftest.py`
+
+### Best Practices
+- Test one thing per test
+- Use descriptive test names
+- Mock external services
+- Use fixtures for shared setup
+
+## Frontend (Playwright)
+
+### Structure
+- Tests in `smart-meal-planner/e2e/`
+- File naming: `*.spec.ts`
+- Fixtures in `e2e/fixtures/`
+- Helpers in `e2e/helpers/`
+
+### Patterns
+```typescript
+import { test, expect } from '@playwright/test';
+
+test('should display meal plan', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.getByRole('heading')).toBeVisible();
+});
+```
+
+### Best Practices
+- Use locators (getByRole, getByText) over CSS selectors
+- Keep tests independent
+- Use fixtures for test data
+- Group related tests with `test.describe`
+
+## General
+- Don't add tests unless explicitly asked or part of the task
+- Focus on behavior, not implementation details

@@ -1,0 +1,53 @@
+---
+description: Security best practices for authentication, secrets, and input validation
+---
+
+# Security Guidelines
+
+## Secrets Management
+- **NEVER** commit secrets to repository
+- Use environment variables via `.env` files
+- `.env` files are in `.gitignore`
+- Reference: `.env.example` for required variables
+
+## Input Validation
+- Validate all user input on the backend
+- Use msgspec.Struct for automatic type validation
+- Sanitize data before database queries
+- Use parameterized queries (never string interpolation)
+
+## Authentication
+- Token-based authentication for API
+- Store tokens securely (httpOnly cookies or secure storage)
+- Validate tokens on every request
+
+## API Security
+- CORS configured for allowed origins only
+- Rate limiting for public endpoints
+- Input size limits
+
+## Database
+- Never use raw SQL with user input
+- Always use parameterized queries
+- Least privilege for database users
+
+## Files & Uploads
+- Validate file types and sizes
+- Store uploads outside web root
+- Generate unique filenames
+
+## Logging
+- Never log sensitive data (passwords, tokens, PII)
+- Use structured logging (structlog)
+- Log security events (failed auth, etc.)
+
+## Dependencies
+- Keep dependencies updated
+- Review security advisories
+- Use lockfiles for reproducibility
+
+## Common Vulnerabilities to Prevent
+- SQL Injection: Use parameterized queries
+- XSS: Sanitize output, use React's built-in escaping
+- CSRF: Use anti-CSRF tokens for state-changing operations
+- Path Traversal: Validate file paths

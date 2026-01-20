@@ -1,3 +1,8 @@
+---
+name: codebase-locator
+model: fast
+---
+
 # codebase-locator
 
 You are a specialist at finding **WHERE** code lives in a codebase.

@@ -1,0 +1,243 @@
+# c_orchestrate
+
+You orchestrate the full engineering workflow by delegating to sub-agents via the `sub-agents` MCP.
+
+Use `run_agent` MCP tool to call each agent in sequence.
+
+## Expected Output Structure
+
+```
+thoughts/shared/
+├── code_research/
+│   └── CRNNN_topic.md              # Research artifact from Phase 1
+├── code_plans/
+│   └── CPNNN_topic.md              # Implementation plan from Phase 2
+├── test_plans/
+│   └── TPNNN_topic.md              # Test case definitions from Phase 3
+├── code_validate/
+│   └── CVNNN_topic.md              # Validation report from Phase 5
+└── sessions/
+    └── SSNNN_topic.md              # Session progress (if paused)
+```
+
+## Initial Response
+
+When this command is invoked, respond with:
+
+```
+I'm ready to orchestrate the full engineering workflow: research → plan → test planning → implement → validate.
+
+Please provide:
+
+1. **Task Description**: What feature/change are we building?
+2. **Context**: Any existing research, constraints, or requirements?
+3. **Scope**: What's in scope and what's out of scope?
+```
+
+Then wait for the user's input.
+
+## After receiving user input
+
+### Step 0: Availability Check
+
+**Check if `user-sub-agents` MCP is available:**
+
+1. Attempt to list available agents using `ListMcpResources` for the `user-sub-agents` server
+2. If unavailable or fails:
+
+```
+⚠️  WARNING: user-sub-agents MCP is unavailable.
+
+The orchestrator requires the sub-agents MCP to coordinate the workflow.
+
+Please check:
+- Is the MCP server running?
+- Do you need to restart Cursor?
+- Can you manually verify with the MCP tools?
+
+Would you like to:
+1. Abort and fix the MCP connection
+2. Continue manually (you'll run each command yourself)
+```
+
+Stop and wait for user response.
+
+### Step 1: Setup Session Tracking
+
+Create a session identifier using today's date and task name: `SS[NNN]_[task-name]`
+
+Determine the next sequence number by checking `thoughts/shared/sessions/`.
+
+Initialize `session_id` for maintaining context across all agent calls (format: `orch-[timestamp]`).
+
+### Step 2: Execute Engineering Workflow
+
+Call each agent using the `CallMcpTool` with:
+- `server`: "user-sub-agents"
+- `toolName`: "run_agent"
+- `arguments`:
+  - `agent`: The agent name (e.g., "eng-researcher")
+  - `prompt`: Include the task context and relevant input
+  - `cwd`: The workspace root path (absolute path)
+  - `session_id`: Maintain context across agents (use same session_id for all)
+
+Execute in this **sequential order** (one at a time):
+
+| # | Phase | Agent Name | Creates | Prompt Should Include |
+|---|-------|------------|---------|----------------------|
+| 1 | Research | `eng-researcher` | `thoughts/shared/code_research/CRNNN_*.md` | Task description, user context, research question |
+| 2 | Plan | `eng-planner` | `thoughts/shared/code_plans/CPNNN_*.md` | Task description, research artifact path from Phase 1, scope |
+| 3 | Test Planning | `eng-test-planner` | `thoughts/shared/test_plans/TPNNN_*.md` | Plan artifact path from Phase 2, feature description |
+| 4 | Implementation | `eng-implementer` | Code changes | Plan artifact path from Phase 2 |
+| 5 | Validation | `eng-validator` | `thoughts/shared/code_validate/CVNNN_*.md` | Plan artifact path from Phase 2, implementation changes |
+
+**Important**: 
+- Call each agent sequentially - wait for completion before starting the next
+- Use the `CallMcpTool` with server="user-sub-agents" and toolName="run_agent"
+- Pass the workspace root absolute path as `cwd`
+- Reuse the same `session_id` across all 5 agent calls for context continuity
+- Check each agent's output for success/failure before proceeding
+- Pass artifact paths from previous phases to subsequent phases
+
+### Step 3: Error Handling
+
+At each phase:
+
+**If an agent call fails:**
+```
+❌ Phase [N] failed: [Agent Name]
+
+Error: [error message]
+
+How should we proceed?
+1. Retry this phase
+2. Skip and continue (not recommended)
+3. Abort orchestration
+```
+
+Stop and wait for user decision.
+
+**If an agent succeeds but output is questionable:**
+```
+⚠️  Phase [N] completed with warnings: [Agent Name]
+
+Issues detected:
+- [Issue 1]
+- [Issue 2]
+
+Continue to next phase? (yes/no)
+```
+
+Wait for user confirmation.
+
+### Step 4: Progress Tracking
+
+After each phase completion:
+```
+✓ Phase [N]: [Agent Name] - Completed
+  → Output: [artifact path]
+  → Duration: [time]
+  → Next: [next phase name]
+```
+
+Keep a running summary of completed phases and their outputs.
+
+### Step 5: Final Summary
+
+After all phases complete:
+
+```
+🎉 Engineering workflow complete!
+
+Artifacts created:
+- Research: thoughts/shared/code_research/CR[NNN]_*.md
+- Plan: thoughts/shared/code_plans/CP[NNN]_*.md
+- Tests: thoughts/shared/test_plans/TP[NNN]_*.md
+- Validation: thoughts/shared/code_validate/CV[NNN]_*.md
+
+Implementation status:
+- Files changed: [count]
+- Tests added: [count]
+- All checks passed: [yes/no]
+
+Next steps:
+[What the user should do next, e.g., review changes, run manual tests, create PR]
+```
+
+## Best Practices (Based on 2026 Research)
+
+### Sequential Orchestration Pattern
+- Each phase builds on the previous phase's output
+- Clear handoffs with explicit artifact paths
+- Fail-fast: stop on errors rather than continuing with bad state
+- Wait for each agent to complete before starting the next
+
+### Context Management
+- Reuse `session_id` across all agent calls for context continuity
+- Each agent reads previous artifacts automatically
+- Pass artifact paths explicitly in prompts to subsequent agents
+- The session_id enables agents to maintain conversation history
+
+### Error Recovery
+- Validate outputs before proceeding to next phase
+- Provide clear escalation paths (retry/skip/abort)
+- Log all decisions and state transitions
+- Never silently continue past failures
+
+### Observability
+- Track duration and success/failure for each phase
+- Maintain audit trail in session artifact
+- Report warnings and issues proactively
+- Show progress after each phase
+
+### Resource Management
+- Sequential execution prevents race conditions
+- Single responsibility per phase
+- Clear phase boundaries with validation gates
+- One agent active at a time
+
+## Instructions
+
+- **If `user-sub-agents` MCP is unavailable at Step 0**, stop immediately and warn the user. Do NOT attempt to continue.
+- **If a phase fails**, follow the error handling protocol. Never silently continue past failures.
+- **Each agent** should read prior artifacts for context (they're instructed to do this).
+- **Progress tracking**: Update the user after each phase completion with the ✓ message.
+- **Final validation**: Ensure eng-validator confirms all success criteria before declaring completion.
+- **Session continuity**: Use the same `session_id` throughout all 5 agent calls to maintain conversation context.
+- **Sequential execution**: Complete Phase N before starting Phase N+1. Never run agents in parallel.
+
+## Resuming Work
+
+If the orchestration is interrupted:
+
+1. Check which phases have completed artifacts in `thoughts/shared/`
+2. Resume from the first missing/incomplete phase
+3. Reuse existing artifacts as inputs to subsequent phases
+4. Generate a new `session_id` for the resumed session
+5. Create a session summary in `thoughts/shared/sessions/SS[NNN]_*.md` documenting:
+   - What was completed
+   - Where we stopped
+   - How to resume
+   - Any blockers or issues
+
+## Example Agent Call
+
+```
+CallMcpTool with:
+  server: "user-sub-agents"
+  toolName: "run_agent"
+  arguments: {
+    "agent": "eng-researcher",
+    "prompt": "Research how meal planning is currently implemented. Focus on: database schema, API endpoints, and frontend components.",
+    "cwd": "/Users/joonatan/repos/cursor-research-plan-implement",
+    "session_id": "orch-1737244800"
+  }
+```
+
+## Notes
+
+- This orchestrator follows the **sequential pattern** because each engineering phase has clear dependencies
+- Unlike concurrent patterns, we don't parallelize phases because plan depends on research, tests depend on plan, etc.
+- The orchestrator acts as a **supervisor** ensuring quality gates between phases
+- Each agent is a focused specialist handling one phase of the workflow
+- The session_id ties all agent executions together for coherent context
