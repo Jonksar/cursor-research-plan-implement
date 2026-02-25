@@ -67,12 +67,14 @@ CallMcpTool:
       - Modern idioms and approaches
       
       Focus on: [specific technology/framework]
+
+      Provide "Adaptation for Our Codebase" - how to fit the external pattern into our specific architecture.
     cwd: "/absolute/workspace/path"
 ```
 
 **Option B - Direct MCP (Fallback)**:
-1. `mcp_perplexity_perplexity_search`: Query for best practices and modern approaches
-2. `mcp_grep_searchGitHub`: Find real-world examples from quality repos (>1000 stars)
+1. `user-perplexity-perplexity_search`: Query for best practices and modern approaches
+2. `user-grep-searchGitHub`: Find real-world examples from quality repos (>1000 stars)
 3. Synthesize findings into structured research artifact
 
 **Output**: Research artifact `thoughts/shared/research/ext_NNN_improve_[topic].md`
@@ -97,7 +99,7 @@ CallMcpTool:
       
       Plan should:
       - Address identified issues
-      - Incorporate researched best practices
+      - Incorporate researched best practices (fill "External Patterns Referenced" section)
       - Maintain backward compatibility (unless user specifies otherwise)
       - Include automated tests
     cwd: "/absolute/workspace/path"
@@ -157,18 +159,18 @@ CallMcpTool:
 
 **Output**: Validation artifact `thoughts/shared/code_validate/CVNNN_improve_[topic].md`
 
-### Phase 6: Quality Review
+### Phase 6a: Architecture Review
 
-**Action**: Final quality check
+**Action**: Check clean architecture compliance
 
 ```
 CallMcpTool:
   server: "user-sub-agents"
   toolName: "run_agent"
   arguments:
-    agent: "eng-quality-reviewer"
+    agent: "c6a_architecture_review"
     prompt: |
-      Review code improvement quality
+      Review architecture of improved code
       
       Original: [file:lines before]
       Improved: [file:lines after]
@@ -177,8 +179,31 @@ CallMcpTool:
     cwd: "/absolute/workspace/path"
 ```
 
-**Output**: Quality review `thoughts/shared/code_review/QRNNN_improve_[topic].md`
+**Output**: Architecture review `thoughts/shared/code_review/ARNNN_improve_[topic].md`
 
+### Phase 6b: Simplification Review (In Parallel)
+
+**Action**: Research simplification opportunities
+
+```
+CallMcpTool:
+  server: "user-sub-agents"
+  toolName: "run_agent"
+  arguments:
+    agent: "c6b_simplification_opportunities"
+    prompt: |
+      Review simplification opportunities for improved code
+      
+      Original: [file:lines before]
+      Improved: [file:lines after]
+      Plan: thoughts/shared/code_plans/CPNNN_improve_[topic].md
+      Research: thoughts/shared/research/ext_NNN_improve_[topic].md
+    cwd: "/absolute/workspace/path"
+```
+
+**Output**: Simplification review `thoughts/shared/code_review/SONNN_improve_[topic].md`
+
+**Note**: Phases 6a and 6b run in parallel
 ## Progress Tracking
 
 Update user after each phase:
@@ -204,7 +229,7 @@ Update user after each phase:
   → Status: [pass/fail]
   → Next: Quality review
   
-✓ Phase 6: Quality Review - QRNNN_improve_[topic].md
+✓ Phase 6a & 6b: Quality Review (Parallel) - ARNNN_improve_[topic].md & SONNN_improve_[topic].md
   → Result: [summary]
 ```
 
@@ -214,8 +239,8 @@ Update user after each phase:
 - If tests fail or functionality broken
 - Re-plan → re-implement → re-validate
 
-**Quality Issues (Phase 6 → 4 → 5 → 6)**:
-- If critical quality issues found
+**Quality Issues (Phase 6a/6b → 4 → 5 → 6a/6b)**:
+- If critical architectural issues (6a) or high-impact simplifications (6b) found
 - Re-implement → re-validate → re-review
 
 ## Error Handling
@@ -246,7 +271,7 @@ Artifacts:
 - Research: thoughts/shared/research/ext_NNN_improve_[topic].md
 - Plan: thoughts/shared/code_plans/CPNNN_improve_[topic].md
 - Validation: thoughts/shared/code_validate/CVNNN_improve_[topic].md
-- Review: thoughts/shared/code_review/QRNNN_improve_[topic].md
+- Review: thoughts/shared/code_review/ARNNN_improve_[topic].md & SONNN_improve_[topic].md
 
 Tests: ✓ | Quality: [score/result]
 ```
@@ -264,7 +289,8 @@ Tests: ✓ | Quality: [score/result]
 3. **Plan**: Replace with bcrypt, add salt, update tests, migration strategy
 4. **Implement**: New hash_password/verify_password functions using researched patterns
 5. **Validate**: All auth tests pass + new security tests + no regressions
-6. **Review**: Security improved, best practices applied, backwards compatibility addressed
+6a. **Architecture Review**: Clean architecture maintained, proper layering
+6b. **Simplification Review**: Researched industry patterns, confirmed optimal approach
 
 ## Critical Rules
 

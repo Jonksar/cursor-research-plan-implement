@@ -1,17 +1,16 @@
-# c6_review_quality
+# c6a_architecture_review
 
-You are tasked with reviewing recently implemented code for clean architecture compliance and code simplification opportunities.
+You are tasked with reviewing recently implemented code for clean architecture compliance.
 
 ## Initial Response
 
 When this command is invoked, respond with:
 
 ```
-I'm ready to review the code quality. Please provide:
+I'm ready to review the architecture. Please provide:
 
 1. **Implementation Scope**: What was recently implemented? (or point me to the plan artifact)
 2. **Files to Review**: Specific files/directories to focus on (optional - I can detect from git status)
-3. **Review Depth**: Full architectural review or just simplification?
 ```
 
 Then wait for the user's input.
@@ -36,7 +35,7 @@ Before reviewing, gather context:
 3. Check pre-commit status (if applicable)
 4. Note any linter errors
 
-### Step 3: Conduct Quality Review
+### Step 3: Conduct Architecture Review
 
 Apply these review criteria:
 
@@ -53,51 +52,32 @@ Apply these review criteria:
 - Framework dependencies in domain/use case layers
 - Untestable code (no dependency injection)
 
-#### B. Code Simplification Assessment
-
-**Complexity Analysis**:
-- Check cognitive complexity (use complexipy as reference)
-- Identify nested ternaries
-- Find overly clever one-liners
-- Spot unnecessary nesting
-
-**Clarity Assessment**:
-- Variable/function naming clarity
-- Logic flow readability
-- Comment quality (remove obvious ones, keep helpful ones)
-
-**Duplication Detection**:
-- Repeated patterns across files
-- Copy-pasted logic
-- Opportunities for extraction
-
-#### C. Project Standards Compliance
+#### B. Project Standards Compliance
 
 **Python Backend**:
-- \`msgspec.Struct\` for models (not Pydantic)
-- \`polars\` for dataframes (not pandas)
+- `msgspec.Struct` for models (not Pydantic)
+- `polars` for dataframes (not pandas)
 - Async/await patterns
 - Type hints present
 - Pre-commit checks passing
 
 **TypeScript Frontend**:
 - ES modules with correct imports
-- \`function\` keyword over arrow functions
+- `function` keyword over arrow functions
 - Explicit return types
 - React Props types explicit
 
-### Step 4: Generate Review Report
+### Step 4: Generate Architecture Review Report
 
 Write a comprehensive review artifact:
 
 **Structure**:
 1. Executive Summary (Good/Needs Improvement/Requires Refactoring)
 2. Clean Architecture Assessment (layer analysis, dependency violations)
-3. Code Simplification Assessment (complexity, clarity, duplication)
-4. Project Standards Compliance (specific violations)
-5. Overall Assessment (strengths, improvements, critical issues)
-6. Action Plan (immediate/short-term/long-term)
-7. Testing Recommendations
+3. Project Standards Compliance (specific violations)
+4. Overall Assessment (strengths, improvements, critical issues)
+5. Action Plan (immediate/short-term/long-term)
+6. Testing Recommendations
 
 **For Each Issue**:
 - Location (file:lines)
@@ -123,13 +103,13 @@ Write a comprehensive review artifact:
 
 ### Step 6: Save and Present
 
-1. Determine next sequence number by checking \`thoughts/shared/code_review/\`
-2. Save review to \`thoughts/shared/code_review/QR[NNN]_topic.md\`
+1. Determine next sequence number by checking `thoughts/shared/code_review/`
+2. Save review to `thoughts/shared/code_review/AR[NNN]_topic.md`
 3. Present to user:
 
 **If Review Fails**:
 ```
-❌ Code Review Failed - Blocking Issues Found
+❌ Architecture Review Failed - Blocking Issues Found
 
 Critical Issues: [count]
 - [Issue 1 title] (location)
@@ -137,12 +117,12 @@ Critical Issues: [count]
 
 These must be fixed before proceeding.
 
-Review artifact: thoughts/shared/code_review/QR[NNN]_topic.md
+Review artifact: thoughts/shared/code_review/AR[NNN]_topic.md
 ```
 
 **If Review Passes with Recommendations**:
 ```
-✓ Code Review Passed - Recommendations Available
+✓ Architecture Review Passed - Recommendations Available
 
 Strengths:
 - [Strength 1]
@@ -152,26 +132,26 @@ Recommended Improvements: [count]
 - [Improvement 1]
 - [Improvement 2]
 
-Review artifact: thoughts/shared/code_review/QR[NNN]_topic.md
+Review artifact: thoughts/shared/code_review/AR[NNN]_topic.md
 ```
 
 **If Review Passes Clean**:
 ```
-✓ Code Review Passed - Excellent Quality
+✓ Architecture Review Passed - Excellent Quality
 
 No critical or high-severity issues found.
 
 Minor suggestions: [count]
 
-Review artifact: thoughts/shared/code_review/QR[NNN]_topic.md
+Review artifact: thoughts/shared/code_review/AR[NNN]_topic.md
 ```
 
 ## Integration with Orchestrator
 
-This command is designed to be called as **Phase 6** in the orchestration workflow:
+This command is designed to be called as **Phase 6a** in the orchestration workflow (runs in parallel with Phase 6b):
 
 - **Input**: Implementation plan artifact, list of changed files
-- **Output**: Quality review artifact with pass/fail status
+- **Output**: Architecture review artifact with pass/fail status
 - **Blocking**: Should block PR/merge if critical issues found
 
 ## Best Practices
@@ -186,16 +166,15 @@ This command is designed to be called as **Phase 6** in the orchestration workfl
 
 This review is based on:
 - Clean Architecture by Robert C. Martin
-- Code Simplifier patterns from Anthropic
-- Project-specific standards in \`.cursor/rules/\`
+- Project-specific standards in `.cursor/rules/`
 
 ## Example Invocation
 
 ```
-/c6_review_quality
+/c6a_architecture_review
 
 Implementation plan: thoughts/shared/code_plans/CP001_meal_planning.md
-Focus areas: Clean architecture and complexity
+Focus areas: Clean architecture and dependency direction
 ```
 
 ## Notes
@@ -204,3 +183,4 @@ Focus areas: Clean architecture and complexity
 - The review produces an artifact for developer action
 - Can be run independently or as part of orchestrated workflow
 - Integrates with pre-commit hooks (checks their status)
+- Runs in parallel with c6b_simplification_opportunities

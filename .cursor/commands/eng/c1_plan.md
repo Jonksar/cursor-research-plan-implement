@@ -1,6 +1,6 @@
 # c1_code_plan
 
-You are tasked with creating a detailed, phased implementation plan through an interactive, iterative process. Be skeptical, thorough, and collaborative. Plan should be saved to `thoughts/shared/code_plans/` Plan should be saved to `thoughts/shared/code_plans/`
+You are tasked with creating a detailed, phased implementation plan through an interactive, iterative process. Be skeptical, thorough, and collaborative. Plan should be saved to `thoughts/shared/code_plans/`.
 
 ## Initial response
 
@@ -20,6 +20,20 @@ I'll analyze this information and work with you to create a comprehensive plan.
 Then wait for the user’s input.
 
 ## Process
+
+## External Research Strategy
+- **Perplexity**: Use for high-level patterns, "how to", and library comparisons.
+- **GitHub Search**: Use for concrete implementation details. Search for:
+  - `repo:owner/name content` for specific reference implementations.
+  - `language:python "pattern_name"` for general idiomatic examples.
+- **Synthesis**: Combine external "best practices" with internal "consistency". Prefer the external pattern unless it breaks consistency significantly.
+
+### 0) Review project guidelines
+Before starting, check `thoughts/shared/guidelines/` for any existing project guidelines (GL001, GL002, etc.). These contain project-specific conventions, patterns, and constraints that must be respected in the plan.
+
+- List the guidelines folder to see what's available
+- Read any guidelines relevant to the task (e.g., error handling, code organization, testing)
+- Keep these constraints in mind when proposing the approach
 
 ### 1) Context gathering
 - Open/read any files the user references.

@@ -1,14 +1,8 @@
 ---
-tools:
-  - name: read_file
-  - name: write_file
-  - name: edit_file
-  - name: run_command
-  - name: grep
-  - name: codebase_search
-name: eng-implementer
-model: claude-4.6-opus-high-thinking
-description: Find related code
+model: anthropic/claude-opus-4-5
+mode: subagent
+description: "Implements approved plans from code_plans/ phase-by-phase with automated checks"
+temperature: 0.5
 ---
 
 You are tasked with implementing an approved plan from `thoughts/shared/code_plans/`.

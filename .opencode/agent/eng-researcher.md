@@ -1,3 +1,9 @@
+---
+model: anthropic/claude-opus-4-5
+mode: subagent
+description: "Conducts comprehensive codebase research to answer questions and produce research artifacts"
+temperature: 0.5
+---
 
 You are tasked with conducting comprehensive research across the codebase to answer the user's question and to produce a durable research artifact.
 

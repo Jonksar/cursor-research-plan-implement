@@ -29,8 +29,7 @@ Then wait for the user's query.
 **Trigger**: If the task is novel, high-level, or lacks a specific library target.
 
 **Use Perplexity MCP**:
-- `mcp_perplexity_perplexity_search` for faster, straightforward questions
-- `mcp_perplexity_perplexity_research` for slower, more complex questions
+- `user-perplexity-perplexity_search` for faster, straightforward questions
 
 **Query Format**: "How to solve [problem type]? What are specific approaches and library recommendations? What to focus on?"
 
@@ -47,7 +46,7 @@ Then wait for the user's query.
 
 **Trigger**: Once a specific library or pattern is identified (from Phase 1 or user input).
 
-**Use GitHub Search MCP** (`mcp_grep_searchGitHub`):
+**Use GitHub Search MCP** (`user-grep-searchGitHub`):
 
 **A. Definition Scout**
 - **Goal**: Confirm definitions and available exceptions

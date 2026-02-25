@@ -1,0 +1,30 @@
+{
+  "mcpServers": {
+    "grep": {
+      "url": "https://mcp.grep.app"
+    },
+    "perplexity": {
+      "args": [
+        "-y",
+        "@perplexity-ai/mcp-server"
+      ],
+      "command": "npx",
+      "env": {
+        "PERPLEXITY_API_KEY": "${PERPLEXITY_API_KEY}"
+      }
+    },
+    "sub-agents": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "sub-agents-mcp"
+      ],
+      "env": {
+        "EXECUTION_TIMEOUT_MS": "600000",
+        "AGENTS_DIR": "/Users/joonatan/repos/cursor-research-plan-implement/.cursor/agents",
+        "AGENT_TYPE": "agent",
+        "CURSOR_API_KEY": "key_84fbef4145eb5c1407f776aac56ff014f9fe23f1d610759835dd9d42d1449cb1"
+      }
+    }
+  }
+}
